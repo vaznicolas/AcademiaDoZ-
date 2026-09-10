@@ -1,11 +1,12 @@
 ﻿// Nicolas Vaz
 
+using AcademiaDoZe.Domain.Common;
 using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.ValueObjects;
 
 namespace AcademiaDoZe.Domain.Entities;
 
-public class Matricula : Entity
+public class Matricula : Entity, IAggregateRoot
 {
     public Aluno Aluno { get; private set; }
     public MatriculaPlano Plano { get; private set; }
@@ -36,5 +37,28 @@ public class Matricula : Entity
         Restricoes = restricoes;
         ObservacoesRestricoes = observacoesRestricoes;
         LaudoMedico = laudoMedico;
+    }
+
+    public static Matricula Criar(
+        int id,
+        Aluno aluno,
+        MatriculaPlano plano,
+        DateOnly dataInicio,
+        DateOnly dataFinal,
+        string objetivo,
+        MatriculaRestricoes restricoes,
+        string observacoesRestricoes,
+        Arquivo laudoMedico)
+    {
+        return new Matricula(
+            id,
+            aluno,
+            plano,
+            dataInicio,
+            dataFinal,
+            objetivo,
+            restricoes,
+            observacoesRestricoes,
+            laudoMedico);
     }
 }

@@ -1,8 +1,10 @@
 ﻿// Nicolas Vaz
 
+using AcademiaDoZe.Domain.Common;
+
 namespace AcademiaDoZe.Domain.Entities;
 
-public class AcessoAluno : Entity
+public class AcessoAluno : Entity, IAggregateRoot
 {
     public Aluno Aluno { get; private set; }
     public DateTime DataHoraEntrada { get; private set; }
@@ -18,5 +20,18 @@ public class AcessoAluno : Entity
         Aluno = aluno;
         DataHoraEntrada = dataHoraEntrada;
         DataHoraSaida = dataHoraSaida;
+    }
+
+    public static AcessoAluno Criar(
+        int id,
+        Aluno aluno,
+        DateTime dataHoraEntrada,
+        DateTime? dataHoraSaida)
+    {
+        return new AcessoAluno(
+            id,
+            aluno,
+            dataHoraEntrada,
+            dataHoraSaida);
     }
 }

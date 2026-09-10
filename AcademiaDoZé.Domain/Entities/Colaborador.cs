@@ -1,11 +1,12 @@
 ﻿// Nicolas Vaz
 
+using AcademiaDoZe.Domain.Common;
 using AcademiaDoZe.Domain.Enums;
 using AcademiaDoZe.Domain.ValueObjects;
 
 namespace AcademiaDoZe.Domain.Entities;
 
-public class Colaborador : Pessoa
+public class Colaborador : Pessoa, IAggregateRoot
 {
     public DateOnly DataAdmissao { get; private set; }
     public ColaboradorTipo Tipo { get; private set; }
@@ -38,5 +39,39 @@ public class Colaborador : Pessoa
         DataAdmissao = dataAdmissao;
         Tipo = tipo;
         Vinculo = vinculo;
+    }
+
+    public static Colaborador Criar(
+        int id,
+        string nome,
+        Cpf cpf,
+        DateOnly dataNascimento,
+        Telefone telefone,
+        Email email,
+        Endereco endereco,
+        Senha senha,
+        Arquivo foto,
+        DateOnly dataAdmissao,
+        ColaboradorTipo tipo,
+        ColaboradorVinculo vinculo)
+    {
+        return new Colaborador(
+            id,
+            nome,
+            cpf,
+            dataNascimento,
+            telefone,
+            email,
+            endereco,
+            senha,
+            foto,
+            dataAdmissao,
+            tipo,
+            vinculo);
+    }
+
+    public void AlterarSenha(Senha novaSenha)
+    {
+        Senha = novaSenha;
     }
 }
