@@ -33,13 +33,13 @@ public class AlunoInfrastructureTests : TestBase
         var aluno =
             Aluno.Criar(
                 id: 0,
-                nome: nome ?? "Aluno Teste " + Guid.NewGuid().ToString("N")[..5],
+                nome: nome ?? "Nicolas",
                 cpf: Cpf.Criar(GerarCpf()).Value!,
                 dataNascimento: new DateOnly(2000, 3, 20),
                 telefone: Telefone.Criar(GerarTelefone()).Value!,
                 email: Email.Criar(GerarEmail()).Value!,
-                endereco: Endereco.Criar(logradouro, "100", "Casa").Value!,
-                senha: Senha.Criar("SenhaValida123").Value!,
+                endereco: Endereco.Criar(logradouro, "200", "Vaz").Value!,
+                senha: Senha.Criar("SQLServer123").Value!,
                 foto: Arquivo.Criar("foto.jpg").Value!);
 
         return await alunoRepo.Adicionar(aluno);

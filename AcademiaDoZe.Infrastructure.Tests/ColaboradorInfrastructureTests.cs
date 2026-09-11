@@ -35,13 +35,13 @@ public class ColaboradorInfrastructureTests : TestBase
         var colaborador =
             Colaborador.Criar(
                 id: 0,
-                nome: "Colaborador Teste " + Guid.NewGuid().ToString("N")[..5],
+                nome: "Nicolas",
                 cpf: Cpf.Criar(GerarCpf()).Value!,
                 dataNascimento: new DateOnly(1995, 5, 15),
                 telefone: Telefone.Criar(GerarTelefone()).Value!,
                 email: Email.Criar(GerarEmail()).Value!,
-                endereco: Endereco.Criar(logradouro, "200", "Sala 2").Value!,
-                senha: Senha.Criar("SenhaValida123").Value!,
+                endereco: Endereco.Criar(logradouro, "200", "Vaz").Value!,
+                senha: Senha.Criar("SQLServer123").Value!,
                 foto: Arquivo.Criar("foto.jpg").Value!,
                 dataAdmissao: new DateOnly(2023, 1, 1),
                 tipo: tipo,
