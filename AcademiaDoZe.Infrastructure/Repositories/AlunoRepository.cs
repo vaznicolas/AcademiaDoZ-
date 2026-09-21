@@ -1,5 +1,6 @@
 ﻿// Nicolas Vaz
 
+using AcademiaDoZe.Domain.Common;
 using AcademiaDoZe.Domain.Entities;
 using AcademiaDoZe.Domain.Repositories;
 using AcademiaDoZe.Domain.ValueObjects;
@@ -24,9 +25,11 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
         "SELECT " +
         "a.id_aluno, a.cpf, a.nome, a.nascimento, a.telefone, a.email, " +
         "a.logradouro_id, a.numero, a.complemento, a.senha, a.foto, " +
-        "l.id_logradouro, l.cep, l.nome AS logradouro_nome, l.bairro, l.cidade, l.estado, l.pais " +
+        "l.id_logradouro, l.cep, l.nome AS logradouro_nome, " +
+        "l.bairro, l.cidade, l.estado, l.pais " +
         "FROM tb_aluno a " +
-        "INNER JOIN tb_logradouro l ON a.logradouro_id = l.id_logradouro";
+        "INNER JOIN tb_logradouro l " +
+        "ON a.logradouro_id = l.id_logradouro";
 
     public async Task<Aluno?> ObterPorId(
         int id,
@@ -38,14 +41,21 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
                 $"{BaseSelectQuery} WHERE a.id_aluno = @Id";
 
             await using var command =
-                await CreateCommandAsync(query, cancellationToken);
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
 
-            command.AddParameter("@Id", id, DbType.Int32);
+            command.AddParameter(
+                "@Id",
+                id,
+                DbType.Int32);
 
             await using var reader =
-                await command.ExecuteReaderAsync(cancellationToken);
+                await command.ExecuteReaderAsync(
+                    cancellationToken);
 
-            return await reader.ReadAsync(cancellationToken)
+            return await reader.ReadAsync(
+                cancellationToken)
                 ? Map(reader)
                 : null;
         }
@@ -67,14 +77,18 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
                 $"{BaseSelectQuery} ORDER BY a.nome";
 
             await using var command =
-                await CreateCommandAsync(query, cancellationToken);
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
 
             await using var reader =
-                await command.ExecuteReaderAsync(cancellationToken);
+                await command.ExecuteReaderAsync(
+                    cancellationToken);
 
             var alunos = new List<Aluno>();
 
-            while (await reader.ReadAsync(cancellationToken))
+            while (await reader.ReadAsync(
+                cancellationToken))
             {
                 alunos.Add(Map(reader));
             }
@@ -97,46 +111,66 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
         try
         {
             int id =
-                reader.GetInt32Value("id_aluno");
+                reader.GetInt32Value(
+                    "id_aluno");
 
             var cpf =
-                Cpf.Criar(reader.GetStringValue("cpf")).Value!;
+                Cpf.Criar(
+                    reader.GetStringValue("cpf")).Value!;
 
             string nome =
-                reader.GetStringValue(nomeColumn);
+                reader.GetStringValue(
+                    nomeColumn);
 
             DateOnly nascimento =
-                reader.GetDateOnlyValue("nascimento");
+                reader.GetDateOnlyValue(
+                    "nascimento");
 
             var telefone =
-                Telefone.Criar(reader.GetStringValue("telefone")).Value!;
+                Telefone.Criar(
+                    reader.GetStringValue(
+                        "telefone")).Value!;
 
             var email =
-                Email.Criar(reader.GetStringValue("email")).Value!;
+                Email.Criar(
+                    reader.GetStringValue(
+                        "email")).Value!;
 
             string numero =
-                reader.GetStringValue("numero");
+                reader.GetStringValue(
+                    "numero");
 
             string complemento =
-                reader.GetNullableString("complemento");
+                reader.GetNullableString(
+                    "complemento");
 
             var senha =
-                Senha.Criar(reader.GetStringValue("senha")).Value!;
+                Senha.Criar(
+                    reader.GetStringValue(
+                        "senha")).Value!;
 
             byte[]? fotoBytes =
-                reader.GetNullableBytes("foto");
+                reader.GetNullableBytes(
+                    "foto");
 
-            var foto =
-                Arquivo.Criar(
-                    fotoBytes != null
-                        ? Encoding.UTF8.GetString(fotoBytes)
-                        : "sem-foto").Value!;
+            Arquivo foto =
+                fotoBytes != null
+                    ? Arquivo.Criar(
+                        Encoding.UTF8.GetString(
+                            fotoBytes)).Value!
+                    : Arquivo.Criar(
+                        "sem-foto").Value!;
 
             var logradouro =
-                LogradouroRepository.Map(reader, "logradouro_nome");
+                LogradouroRepository.Map(
+                    reader,
+                    "logradouro_nome");
 
             var endereco =
-                Endereco.Criar(logradouro, numero, complemento).Value!;
+                Endereco.Criar(
+                    logradouro,
+                    numero,
+                    complemento).Value!;
 
             return Aluno.Criar(
                 id,
@@ -168,29 +202,70 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
             string query =
                 FormatInsertQuery(
                     "INSERT INTO tb_aluno " +
-                    "(cpf, nome, nascimento, telefone, email, logradouro_id, numero, " +
-                    "complemento, senha, foto) " +
+                    "(cpf, nome, nascimento, telefone, email, " +
+                    "logradouro_id, numero, complemento, senha, foto) " +
                     "VALUES " +
-                    "(@Cpf, @Nome, @Nascimento, @Telefone, @Email, @LogradouroId, @Numero, " +
-                    "@Complemento, @Senha, @Foto)");
+                    "(@Cpf, @Nome, @Nascimento, @Telefone, @Email, " +
+                    "@LogradouroId, @Numero, @Complemento, @Senha, @Foto)");
 
             await using var command =
-                await CreateCommandAsync(query, cancellationToken);
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
 
-            command.AddParameter("@Cpf", entity.Cpf.Valor, DbType.String);
-            command.AddParameter("@Nome", entity.Nome, DbType.String);
-            command.AddParameter("@Nascimento", entity.DataNascimento.ToDateTime(TimeOnly.MinValue), DbType.Date);
-            command.AddParameter("@Telefone", entity.Telefone.Valor, DbType.String);
-            command.AddParameter("@Email", entity.Email.Valor, DbType.String);
-            command.AddParameter("@LogradouroId", entity.Endereco.LogradouroId, DbType.Int32);
-            command.AddParameter("@Numero", entity.Endereco.Numero, DbType.String);
-            command.AddParameter("@Complemento", (object?)entity.Endereco.Complemento ?? DBNull.Value, DbType.String);
-            command.AddParameter("@Senha", entity.Senha.Valor, DbType.String);
+            command.AddParameter(
+                "@Cpf",
+                entity.Cpf.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@Nome",
+                entity.Nome,
+                DbType.String);
+
+            command.AddParameter(
+                "@Nascimento",
+                entity.DataNascimento.ToDateTime(
+                    TimeOnly.MinValue),
+                DbType.Date);
+
+            command.AddParameter(
+                "@Telefone",
+                entity.Telefone.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@Email",
+                entity.Email.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@LogradouroId",
+                entity.Endereco.LogradouroId,
+                DbType.Int32);
+
+            command.AddParameter(
+                "@Numero",
+                entity.Endereco.Numero,
+                DbType.String);
+
+            command.AddParameter(
+                "@Complemento",
+                (object?)entity.Endereco.Complemento
+                    ?? DBNull.Value,
+                DbType.String);
+
+            command.AddParameter(
+                "@Senha",
+                entity.Senha.Valor,
+                DbType.String);
+
             command.AddParameter(
                 "@Foto",
-                entity.Foto is null
+                entity.Foto == null
                     ? DBNull.Value
-                    : Encoding.UTF8.GetBytes(entity.Foto.Valor),
+                    : Encoding.UTF8.GetBytes(
+                        entity.Foto.Valor),
                 DbType.Binary);
 
             int id =
@@ -200,9 +275,12 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
                     cancellationToken);
 
             var idProperty =
-                typeof(Entity).GetProperty("Id");
+                typeof(Entity).GetProperty(
+                    "Id");
 
-            idProperty?.SetValue(entity, id);
+            idProperty?.SetValue(
+                entity,
+                id);
 
             return entity;
         }
@@ -223,39 +301,93 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
         {
             string query =
                 "UPDATE tb_aluno SET " +
-                "cpf = @Cpf, nome = @Nome, nascimento = @Nascimento, telefone = @Telefone, " +
-                "email = @Email, logradouro_id = @LogradouroId, numero = @Numero, " +
-                "complemento = @Complemento, senha = @Senha, foto = @Foto " +
+                "cpf = @Cpf, " +
+                "nome = @Nome, " +
+                "nascimento = @Nascimento, " +
+                "telefone = @Telefone, " +
+                "email = @Email, " +
+                "logradouro_id = @LogradouroId, " +
+                "numero = @Numero, " +
+                "complemento = @Complemento, " +
+                "senha = @Senha, " +
+                "foto = @Foto " +
                 "WHERE id_aluno = @Id";
 
             await using var command =
-                await CreateCommandAsync(query, cancellationToken);
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
 
-            command.AddParameter("@Id", entity.Id, DbType.Int32);
-            command.AddParameter("@Cpf", entity.Cpf.Valor, DbType.String);
-            command.AddParameter("@Nome", entity.Nome, DbType.String);
-            command.AddParameter("@Nascimento", entity.DataNascimento.ToDateTime(TimeOnly.MinValue), DbType.Date);
-            command.AddParameter("@Telefone", entity.Telefone.Valor, DbType.String);
-            command.AddParameter("@Email", entity.Email.Valor, DbType.String);
-            command.AddParameter("@LogradouroId", entity.Endereco.LogradouroId, DbType.Int32);
-            command.AddParameter("@Numero", entity.Endereco.Numero, DbType.String);
-            command.AddParameter("@Complemento", (object?)entity.Endereco.Complemento ?? DBNull.Value, DbType.String);
-            command.AddParameter("@Senha", entity.Senha.Valor, DbType.String);
+            command.AddParameter(
+                "@Id",
+                entity.Id,
+                DbType.Int32);
+
+            command.AddParameter(
+                "@Cpf",
+                entity.Cpf.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@Nome",
+                entity.Nome,
+                DbType.String);
+
+            command.AddParameter(
+                "@Nascimento",
+                entity.DataNascimento.ToDateTime(
+                    TimeOnly.MinValue),
+                DbType.Date);
+
+            command.AddParameter(
+                "@Telefone",
+                entity.Telefone.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@Email",
+                entity.Email.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@LogradouroId",
+                entity.Endereco.LogradouroId,
+                DbType.Int32);
+
+            command.AddParameter(
+                "@Numero",
+                entity.Endereco.Numero,
+                DbType.String);
+
+            command.AddParameter(
+                "@Complemento",
+                (object?)entity.Endereco.Complemento
+                    ?? DBNull.Value,
+                DbType.String);
+
+            command.AddParameter(
+                "@Senha",
+                entity.Senha.Valor,
+                DbType.String);
+
             command.AddParameter(
                 "@Foto",
-                entity.Foto is null
+                entity.Foto == null
                     ? DBNull.Value
-                    : Encoding.UTF8.GetBytes(entity.Foto.Valor),
+                    : Encoding.UTF8.GetBytes(
+                        entity.Foto.Valor),
                 DbType.Binary);
 
             int rowsAffected =
-                await command.ExecuteNonQueryAsync(cancellationToken);
+                await command.ExecuteNonQueryAsync(
+                    cancellationToken);
 
             if (rowsAffected == 0)
             {
                 throw new InfrastructureException(
                     "REGISTRO_NAO_ENCONTRADO",
-                    $"Nenhum aluno encontrado com ID {entity.Id} para atualização.");
+                    $"Nenhum aluno encontrado com ID " +
+                    $"{entity.Id} para atualização.");
             }
 
             return entity;
@@ -264,7 +396,8 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
         {
             throw new InfrastructureException(
                 "ERRO_ATUALIZAR_ALUNO",
-                $"Erro ao atualizar aluno ID {entity.Id}: {ex.Message}",
+                $"Erro ao atualizar aluno ID " +
+                $"{entity.Id}: {ex.Message}",
                 ex);
         }
     }
@@ -276,15 +409,22 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
         try
         {
             string query =
-                "DELETE FROM tb_aluno WHERE id_aluno = @Id";
+                "DELETE FROM tb_aluno " +
+                "WHERE id_aluno = @Id";
 
             await using var command =
-                await CreateCommandAsync(query, cancellationToken);
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
 
-            command.AddParameter("@Id", id, DbType.Int32);
+            command.AddParameter(
+                "@Id",
+                id,
+                DbType.Int32);
 
-            var result =
-                await command.ExecuteNonQueryAsync(cancellationToken);
+            int result =
+                await command.ExecuteNonQueryAsync(
+                    cancellationToken);
 
             return result > 0;
         }
@@ -292,7 +432,174 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
         {
             throw new InfrastructureException(
                 "ERRO_REMOVER_ALUNO",
-                $"Erro ao remover aluno ID {id}: {ex.Message}",
+                $"Erro ao remover aluno ID " +
+                $"{id}: {ex.Message}",
+                ex);
+        }
+    }
+
+    public async Task<Aluno?> ObterPorCpf(
+        Cpf cpf,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string query =
+                $"{BaseSelectQuery} WHERE a.cpf = @Cpf";
+
+            await using var command =
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
+
+            command.AddParameter(
+                "@Cpf",
+                cpf.Valor,
+                DbType.String);
+
+            await using var reader =
+                await command.ExecuteReaderAsync(
+                    cancellationToken);
+
+            return await reader.ReadAsync(
+                cancellationToken)
+                ? Map(reader)
+                : null;
+        }
+        catch (DbException ex)
+        {
+            throw new InfrastructureException(
+                "ERRO_OBTER_POR_CPF",
+                $"Erro ao obter aluno por CPF " +
+                $"{cpf.Valor}: {ex.Message}",
+                ex);
+        }
+    }
+
+    public async Task<Aluno?> ObterPorEmail(
+        Email email,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string query =
+                $"{BaseSelectQuery} WHERE a.email = @Email";
+
+            await using var command =
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
+
+            command.AddParameter(
+                "@Email",
+                email.Valor,
+                DbType.String);
+
+            await using var reader =
+                await command.ExecuteReaderAsync(
+                    cancellationToken);
+
+            return await reader.ReadAsync(
+                cancellationToken)
+                ? Map(reader)
+                : null;
+        }
+        catch (DbException ex)
+        {
+            throw new InfrastructureException(
+                "ERRO_OBTER_POR_EMAIL",
+                $"Erro ao obter aluno por Email " +
+                $"{email.Valor}: {ex.Message}",
+                ex);
+        }
+    }
+
+    public async Task<bool> CpfJaExiste(
+        Cpf cpf,
+        int? id = null,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string query =
+                "SELECT COUNT(1) " +
+                "FROM tb_aluno " +
+                "WHERE cpf = @Cpf " +
+                "AND (@Id IS NULL OR id_aluno <> @Id)";
+
+            await using var command =
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
+
+            command.AddParameter(
+                "@Cpf",
+                cpf.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@Id",
+                (object?)id ?? DBNull.Value,
+                DbType.Int32);
+
+            int count =
+                Convert.ToInt32(
+                    await command.ExecuteScalarAsync(
+                        cancellationToken));
+
+            return count > 0;
+        }
+        catch (DbException ex)
+        {
+            throw new InfrastructureException(
+                "ERRO_VERIFICAR_CPF",
+                $"Erro ao verificar existência de CPF: " +
+                $"{ex.Message}",
+                ex);
+        }
+    }
+
+    public async Task<bool> EmailJaExiste(
+        Email email,
+        int? id = null,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string query =
+                "SELECT COUNT(1) " +
+                "FROM tb_aluno " +
+                "WHERE email = @Email " +
+                "AND (@Id IS NULL OR id_aluno <> @Id)";
+
+            await using var command =
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
+
+            command.AddParameter(
+                "@Email",
+                email.Valor,
+                DbType.String);
+
+            command.AddParameter(
+                "@Id",
+                (object?)id ?? DBNull.Value,
+                DbType.Int32);
+
+            int count =
+                Convert.ToInt32(
+                    await command.ExecuteScalarAsync(
+                        cancellationToken));
+
+            return count > 0;
+        }
+        catch (DbException ex)
+        {
+            throw new InfrastructureException(
+                "ERRO_VERIFICAR_EMAIL",
+                $"Erro ao verificar existência de Email: " +
+                $"{ex.Message}",
                 ex);
         }
     }
@@ -303,22 +610,29 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
     {
         try
         {
-            // Evitamos LOWER()/UPPER() diretamente na coluna para não impedir o uso de índices
-            // (full table scan). A collation padrão do SQL Server já é case-insensitive.
             string query =
-                $"{BaseSelectQuery} WHERE a.nome LIKE @Nome ORDER BY a.nome";
+                $"{BaseSelectQuery} " +
+                "WHERE a.nome LIKE @Nome " +
+                "ORDER BY a.nome";
 
             await using var command =
-                await CreateCommandAsync(query, cancellationToken);
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
 
-            command.AddParameter("@Nome", $"%{nome}%", DbType.String);
+            command.AddParameter(
+                "@Nome",
+                $"%{nome}%",
+                DbType.String);
 
             await using var reader =
-                await command.ExecuteReaderAsync(cancellationToken);
+                await command.ExecuteReaderAsync(
+                    cancellationToken);
 
             var alunos = new List<Aluno>();
 
-            while (await reader.ReadAsync(cancellationToken))
+            while (await reader.ReadAsync(
+                cancellationToken))
             {
                 alunos.Add(Map(reader));
             }
@@ -329,7 +643,51 @@ public class AlunoRepository : BaseRepository, IAlunoRepository
         {
             throw new InfrastructureException(
                 "ERRO_OBTER_POR_NOME",
-                $"Erro ao obter alunos por nome {nome}: {ex.Message}",
+                $"Erro ao obter alunos por nome " +
+                $"{nome}: {ex.Message}",
+                ex);
+        }
+    }
+
+    public async Task<bool> TrocarSenha(
+        int id,
+        Senha novaSenha,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string query =
+                "UPDATE tb_aluno " +
+                "SET senha = @Senha " +
+                "WHERE id_aluno = @Id";
+
+            await using var command =
+                await CreateCommandAsync(
+                    query,
+                    cancellationToken);
+
+            command.AddParameter(
+                "@Id",
+                id,
+                DbType.Int32);
+
+            command.AddParameter(
+                "@Senha",
+                novaSenha.Valor,
+                DbType.String);
+
+            int rowsAffected =
+                await command.ExecuteNonQueryAsync(
+                    cancellationToken);
+
+            return rowsAffected > 0;
+        }
+        catch (DbException ex)
+        {
+            throw new InfrastructureException(
+                "ERRO_TROCAR_SENHA",
+                $"Erro ao trocar senha do aluno ID " +
+                $"{id}: {ex.Message}",
                 ex);
         }
     }
