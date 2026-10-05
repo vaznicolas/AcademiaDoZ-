@@ -1,4 +1,6 @@
-﻿using AcademiaDoZe.Infrastructure.Exceptions;
+﻿// Nicolas Vaz
+
+using AcademiaDoZe.Infrastructure.Exceptions;
 using System.Collections.Concurrent;
 using System.Data.Common;
 using System.Reflection;
@@ -27,12 +29,16 @@ public static class DbInitializer
         try
         {
             await using var connection =
-                DbProvider.CreateConnection(connectionString, databaseType);
+                DbProvider.CreateConnection(
+                    connectionString,
+                    databaseType);
 
             await connection.OpenAsync(cancellationToken);
 
             await using var command =
-                DbProvider.CreateCommand(scriptSql, connection);
+                DbProvider.CreateCommand(
+                    scriptSql,
+                    connection);
 
             await command.ExecuteNonQueryAsync(cancellationToken);
 
@@ -49,16 +55,19 @@ public static class DbInitializer
 
     public static string ObterScript(DatabaseType databaseType)
     {
-        var nomeScript = DbProvider.GetScriptName(databaseType);
+        var nomeScript =
+            DbProvider.GetScriptName(databaseType);
 
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly =
+            Assembly.GetExecutingAssembly();
 
-        var resourceName = assembly
-            .GetManifestResourceNames()
-            .FirstOrDefault(r =>
-                r.EndsWith(
-                    nomeScript,
-                    StringComparison.OrdinalIgnoreCase))
+        var resourceName =
+            assembly
+                .GetManifestResourceNames()
+                .FirstOrDefault(r =>
+                    r.EndsWith(
+                        nomeScript,
+                        StringComparison.OrdinalIgnoreCase))
             ?? throw new InfrastructureException(
                 "SCRIPT_EMBARCADO_NAO_ENCONTRADO",
                 $"Script SQL embarcado '{nomeScript}' não encontrado.");
@@ -69,7 +78,8 @@ public static class DbInitializer
                 "ERRO_LEITURA_SCRIPT",
                 $"Erro ao carregar o fluxo do script embarcado '{nomeScript}'.");
 
-        using var reader = new StreamReader(stream);
+        using var reader =
+            new StreamReader(stream);
 
         return reader.ReadToEnd();
     }

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+    xmlns:dto="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.LogradouroListPage"
+    x:DataType="vm:LogradouroListViewModel"
+    Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <VerticalStackLayout
+            Grid.Row="0"
+            Padding="15"
+            Spacing="10">
+
+            <Grid ColumnDefinitions="Auto,*,Auto">
+
+                <Picker
+                    Grid.Column="0"
+                    ItemsSource="{Binding FilterTypes}"
+                    SelectedItem="{Binding SelectedFilterType}"
+                    WidthRequest="110" />
+
+                <Entry
+                    Grid.Column="1"
+                    Text="{Binding SearchText}"
+                    Placeholder="Digite o valor..."
+                    Margin="10,0" />
+
+                <Button
+                    Grid.Column="2"
+                    Text="Buscar"
+                    Command="{Binding SearchLogradourosCommand}" />
+
+            </Grid>
+
+            <Button
+                Text="Novo Logradouro"
+                Command="{Binding AddLogradouroCommand}" />
+
+        </VerticalStackLayout>
+
+        <RefreshView
+            Grid.Row="1"
+            IsRefreshing="{Binding IsRefreshing}"
+            Command="{Binding RefreshCommand}">
+
+            <CollectionView
+                ItemsSource="{Binding Logradouros}"
+                SelectionMode="None">
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        Padding="30"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+                        <Label
+                            Text="Nenhum logradouro encontrado."
+                            FontSize="18"
+                            HorizontalTextAlignment="Center" />
+
+                        <Button
+                            Text="Cadastrar Logradouro"
+                            Command="{Binding AddLogradouroCommand}"
+                            Margin="0,15,0,0" />
+
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:LogradouroDto">
+
+                        <Border
+                            Margin="15,5"
+                            Padding="15"
+                            StrokeShape="RoundRectangle 12">
+
+                            <VerticalStackLayout Spacing="6">
+
+                                <Label
+                                    Text="{Binding Nome}"
+                                    FontSize="18"
+                                    FontAttributes="Bold" />
+
+                                <Label
+                                    Text="{Binding Cep, StringFormat='CEP: {0}'}" />
+
+                                <Label
+                                    Text="{Binding Bairro, StringFormat='Bairro: {0}'}" />
+
+                                <Label
+                                    Text="{Binding Cidade, StringFormat='Cidade: {0}'}" />
+
+                                <Label
+                                    Text="{Binding Estado, StringFormat='Estado: {0}'}" />
+
+                                <HorizontalStackLayout
+                                    Spacing="10">
+                                    
+                                    <Button
+                                        Text="Editar"
+                                        Clicked="OnEditButtonClicked" />
+
+                                    <Button
+                                        Text="Excluir"
+                                        Clicked="OnDeleteButtonClicked" />  
+
+                                </HorizontalStackLayout>
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </RefreshView>
+
+        <Button
+            Grid.Row="1"
+            Text="+"
+            Command="{Binding AddLogradouroCommand}"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="20" />
+
+        <ActivityIndicator
+            Grid.Row="1"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+
+    </Grid>
+
+</ContentPage>

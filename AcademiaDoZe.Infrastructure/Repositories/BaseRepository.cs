@@ -7,19 +7,10 @@ using System.Data.Common;
 
 namespace AcademiaDoZe.Infrastructure.Repositories;
 
-/*
-BaseRepository é uma classe utilitária de infraestrutura focada em gerenciamento de conexões
-(GetOpenConnectionAsync e Dispose/DisposeAsync).
-
-As operações de CRUD e mapeamento são implementadas diretamente nas classes filhas.
-*/
-public abstract class BaseRepository : IDisposable, IAsyncDisposable
+public abstract class BaseRepository
 {
     protected readonly string _connectionString;
     protected readonly DatabaseType _databaseType;
-
-    private DbConnection? _connection;
-    private bool _disposed;
 
     protected BaseRepository(
         string connectionString,
@@ -37,36 +28,29 @@ public abstract class BaseRepository : IDisposable, IAsyncDisposable
     protected virtual async Task<DbConnection> GetOpenConnectionAsync(
         CancellationToken cancellationToken = default)
     {
-        ObjectDisposedException.ThrowIf(_disposed, this);
-
         try
         {
-            // Cria o banco e as tabelas caso ainda não existam.
             await DbInitializer.InicializarAsync(
                 _connectionString,
                 _databaseType,
-                cancellationToken);
+                CancellationToken.None);
 
-            if (_connection == null)
-            {
-                _connection =
-                    DbProvider.CreateConnection(
-                        _connectionString,
-                        _databaseType);
+            var connection =
+                DbProvider.CreateConnection(
+                    _connectionString,
+                    _databaseType);
 
-                await _connection.OpenAsync(cancellationToken);
-            }
-            else if (_connection.State == ConnectionState.Broken)
+            try
             {
-                await _connection.CloseAsync();
-                await _connection.OpenAsync(cancellationToken);
-            }
-            else if (_connection.State == ConnectionState.Closed)
-            {
-                await _connection.OpenAsync(cancellationToken);
-            }
+                await connection.OpenAsync(cancellationToken);
 
-            return _connection;
+                return connection;
+            }
+            catch
+            {
+                await connection.DisposeAsync();
+                throw;
+            }
         }
         catch (DbException ex)
         {
@@ -84,9 +68,22 @@ public abstract class BaseRepository : IDisposable, IAsyncDisposable
         var connection =
             await GetOpenConnectionAsync(cancellationToken);
 
-        return DbProvider.CreateCommand(
-            commandText,
-            connection);
+        try
+        {
+            var command =
+                DbProvider.CreateCommand(
+                    commandText,
+                    connection);
+
+            return new ConnectionOwnedCommand(
+                command,
+                connection);
+        }
+        catch
+        {
+            await connection.DisposeAsync();
+            throw;
+        }
     }
 
     protected string FormatInsertQuery(
@@ -125,42 +122,112 @@ public abstract class BaseRepository : IDisposable, IAsyncDisposable
             dateColumn,
             _databaseType);
 
-    public void Dispose()
+    private sealed class ConnectionOwnedCommand : DbCommand
     {
-        Dispose(disposing: true);
+        private readonly DbCommand _command;
+        private readonly DbConnection _connection;
 
-        GC.SuppressFinalize(this);
-    }
+        public ConnectionOwnedCommand(
+            DbCommand command,
+            DbConnection connection)
+        {
+            _command = command;
+            _connection = connection;
+        }
 
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore().ConfigureAwait(false);
+        public override string CommandText
+        {
+            get => _command.CommandText;
+            set => _command.CommandText = value;
+        }
 
-        Dispose(disposing: false);
+        public override int CommandTimeout
+        {
+            get => _command.CommandTimeout;
+            set => _command.CommandTimeout = value;
+        }
 
-        GC.SuppressFinalize(this);
-    }
+        public override CommandType CommandType
+        {
+            get => _command.CommandType;
+            set => _command.CommandType = value;
+        }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
+        public override UpdateRowSource UpdatedRowSource
+        {
+            get => _command.UpdatedRowSource;
+            set => _command.UpdatedRowSource = value;
+        }
+
+        protected override DbConnection? DbConnection
+        {
+            get => _command.Connection;
+            set => _command.Connection = value;
+        }
+
+        protected override DbParameterCollection DbParameterCollection =>
+            _command.Parameters;
+
+        protected override DbTransaction? DbTransaction
+        {
+            get => _command.Transaction;
+            set => _command.Transaction = value;
+        }
+
+        public override bool DesignTimeVisible
+        {
+            get => _command.DesignTimeVisible;
+            set => _command.DesignTimeVisible = value;
+        }
+
+        protected override DbParameter CreateDbParameter() =>
+            _command.CreateParameter();
+
+        protected override DbDataReader ExecuteDbDataReader(
+            CommandBehavior behavior) =>
+            _command.ExecuteReader(behavior);
+
+        public override int ExecuteNonQuery() =>
+            _command.ExecuteNonQuery();
+
+        public override object? ExecuteScalar() =>
+            _command.ExecuteScalar();
+
+        public override void Cancel()
+        {
+            _command.Cancel();
+        }
+
+        public override void Prepare()
+        {
+            _command.Prepare();
+        }
+
+        public override Task<int> ExecuteNonQueryAsync(
+            CancellationToken cancellationToken) =>
+            _command.ExecuteNonQueryAsync(cancellationToken);
+
+        public override Task<object?> ExecuteScalarAsync(
+            CancellationToken cancellationToken) =>
+            _command.ExecuteScalarAsync(cancellationToken);
+
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _connection?.Dispose();
-                _connection = null;
+                _command.Dispose();
+                _connection.Dispose();
             }
 
-            _disposed = true;
+            base.Dispose(disposing);
         }
-    }
 
-    protected virtual async ValueTask DisposeAsyncCore()
-    {
-        if (_connection != null)
+        public override async ValueTask DisposeAsync()
         {
-            await _connection.DisposeAsync().ConfigureAwait(false);
-            _connection = null;
+            await _command.DisposeAsync();
+            await _connection.DisposeAsync();
+
+            GC.SuppressFinalize(this);
         }
     }
 }

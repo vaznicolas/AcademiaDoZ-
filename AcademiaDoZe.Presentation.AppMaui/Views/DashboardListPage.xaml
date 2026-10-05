@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.DashboardListPage"
+    x:DataType="vm:DashboardListViewModel"
+    Title="{Binding Title}"
+    BackgroundColor="#F5F7FA">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
+
+            <!-- Logo -->
+            <Image
+                Source="academiadoze.png"
+                HeightRequest="110"
+                Aspect="AspectFit"
+                HorizontalOptions="Center" />
+
+            <!-- Cabeçalho -->
+            <VerticalStackLayout
+                Spacing="4"
+                HorizontalOptions="Center">
+
+                <Label
+                    Text="ACADEMIA DO ZÉ"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    TextColor="#073B9C"
+                    HorizontalOptions="Center" />
+
+                <Label
+                    Text="PAINEL ADMINISTRATIVO"
+                    FontSize="13"
+                    FontAttributes="Bold"
+                    TextColor="#061F5C"
+                    HorizontalOptions="Center" />
+
+            </VerticalStackLayout>
+
+            <!-- Indicadores -->
+            <Grid
+                ColumnDefinitions="*,*"
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="12"
+                RowSpacing="12">
+
+                <!-- Logradouros -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="White"
+                    Stroke="#073B9C"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout Spacing="0">
+
+                        <Border
+                            BackgroundColor="#073B9C"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="12,7">
+
+                            <Label
+                                Text="LOGRADOUROS"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                        </Border>
+
+                        <Label
+                            Text="{Binding TotalLogradouros}"
+                            FontSize="34"
+                            FontAttributes="Bold"
+                            TextColor="#061F5C"
+                            HorizontalOptions="Center"
+                            Margin="0,14,0,16" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- Alunos -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Padding="0"
+                    BackgroundColor="White"
+                    Stroke="#073B9C"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout Spacing="0">
+
+                        <Border
+                            BackgroundColor="#073B9C"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="12,7">
+
+                            <Label
+                                Text="ALUNOS"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                        </Border>
+
+                        <Label
+                            Text="{Binding TotalAlunos}"
+                            FontSize="34"
+                            FontAttributes="Bold"
+                            TextColor="#061F5C"
+                            HorizontalOptions="Center"
+                            Margin="0,14,0,16" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- Colaboradores -->
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="White"
+                    Stroke="#073B9C"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout Spacing="0">
+
+                        <Border
+                            BackgroundColor="#073B9C"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="12,7">
+
+                            <Label
+                                Text="COLABORADORES"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                        </Border>
+
+                        <Label
+                            Text="{Binding TotalColaboradores}"
+                            FontSize="34"
+                            FontAttributes="Bold"
+                            TextColor="#061F5C"
+                            HorizontalOptions="Center"
+                            Margin="0,14,0,16" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- Matrículas -->
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Padding="0"
+                    BackgroundColor="White"
+                    Stroke="#073B9C"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout Spacing="0">
+
+                        <Border
+                            BackgroundColor="#073B9C"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12,12,0,0"
+                            Padding="12,7">
+
+                            <Label
+                                Text="MATRÍCULAS"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextColor="White" />
+
+                        </Border>
+
+                        <Label
+                            Text="{Binding TotalMatriculas}"
+                            FontSize="34"
+                            FontAttributes="Bold"
+                            TextColor="#061F5C"
+                            HorizontalOptions="Center"
+                            Margin="0,14,0,16" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+            </Grid>
+
+            <!-- Acesso aos logradouros -->
+            <Button
+                Text="GERENCIAR LOGRADOUROS"
+                Command="{Binding NavigateToLogradourosCommand}"
+                BackgroundColor="#073B9C"
+                TextColor="White"
+                FontAttributes="Bold"
+                FontSize="15"
+                CornerRadius="8"
+                HeightRequest="52" />
+
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                Color="#073B9C" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AcademiaDoZe.Infrastructure\AcademiaDoZe.Infrastructure.csproj" />
-    <ProjectReference Include="..\AcademiaDoZé.Domain\AcademiaDoZe.Domain.csproj" />
+   <ProjectReference Include="..\AcademiaDoZe.Domain\AcademiaDoZe.Domain.csproj" />
   </ItemGroup>
 
 </Project>
