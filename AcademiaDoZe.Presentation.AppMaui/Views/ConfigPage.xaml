@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ConfigPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Configurações">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+
+            <Label
+                Text="Configurações da aplicação"
+                FontSize="26"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="Aparência"
+                FontSize="20"
+                FontAttributes="Bold" />
+
+            <Label Text="Tema da aplicação" />
+
+            <Picker
+                x:Name="TemaPicker"
+                Title="Selecione o tema">
+                <Picker.Items>
+                    <x:String>Sistema</x:String>
+                    <x:String>Claro</x:String>
+                    <x:String>Escuro</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Button Text="🎨  Salvar tema"
+        Clicked="OnSalvarTemaClicked"
+        CornerRadius="10"
+        HeightRequest="48" />
+
+            <Button Text="🗄️  Salvar credenciais"
+        Clicked="OnSalvarBancoClicked"
+        CornerRadius="10"
+        HeightRequest="48" />
+
+            <BoxView HeightRequest="1" Opacity="0.3" />
+
+            <Label
+                Text="Banco de dados SQL Server"
+                FontSize="20"
+                FontAttributes="Bold" />
+
+            <Label Text="Servidor" />
+            <Entry
+                x:Name="ServidorEntry"
+                Placeholder="Ex.: localhost,1433" />
+
+            <Label Text="Banco de dados" />
+            <Entry
+                x:Name="BancoEntry"
+                Placeholder="Nome do banco" />
+
+            <Label Text="Usuário" />
+            <Entry
+                x:Name="UsuarioEntry"
+                Placeholder="Usuário do SQL Server" />
+
+            <Label Text="Senha" />
+            <Entry
+                x:Name="SenhaEntry"
+                Placeholder="Senha do SQL Server"
+                IsPassword="True" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

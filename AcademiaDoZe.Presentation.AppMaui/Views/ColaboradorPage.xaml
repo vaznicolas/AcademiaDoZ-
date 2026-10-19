@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ColaboradorPage"
+    Title="Cadastro de Colaborador">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+
+            <Label Text="Dados pessoais"
+                   FontSize="22"
+                   FontAttributes="Bold" />
+
+            <Entry Placeholder="Nome completo"
+                   Text="{Binding Colaborador.Nome}" />
+
+            <Entry Placeholder="CPF"
+                   Keyboard="Numeric"
+                   Text="{Binding Colaborador.Cpf}" />
+
+            <Label Text="Data de nascimento" />
+            <DatePicker
+                Date="{Binding DataNascimentoDateTime, Mode=TwoWay}"
+                Format="dd/MM/yyyy" />
+
+            <Entry Placeholder="Telefone"
+                   Keyboard="Telephone"
+                   Text="{Binding Colaborador.Telefone}" />
+
+            <Entry Placeholder="E-mail"
+                   Keyboard="Email"
+                   Text="{Binding Colaborador.Email}" />
+
+
+            <Label
+    Text="Endereço"
+    FontSize="22"
+    FontAttributes="Bold"
+    Margin="0,12,0,0" />
+
+            <Entry
+    Placeholder="CEP cadastrado em Logradouros"
+    Keyboard="Numeric"
+    Text="{Binding Colaborador.Endereco.Cep}" />
+
+            <Entry
+    Placeholder="Número"
+    Keyboard="Numeric"
+    Text="{Binding Colaborador.Numero}" />
+
+            <Entry
+    Placeholder="Complemento (opcional)"
+    Text="{Binding Colaborador.Complemento}" />
+
+
+            <Label Text="Dados profissionais"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   Margin="0,12,0,0" />
+
+            <Label Text="Data de admissão" />
+            <DatePicker
+                Date="{Binding DataAdmissaoDateTime, Mode=TwoWay}"
+                Format="dd/MM/yyyy" />
+
+            <Label Text="Tipo de colaborador" />
+            <Picker
+                Title="Selecione o tipo"
+                ItemsSource="{Binding ColaboradorTipos}"
+                SelectedItem="{Binding Colaborador.Tipo}" />
+
+            <Label Text="Vínculo" />
+            <Picker
+                Title="Selecione o vínculo"
+                ItemsSource="{Binding ColaboradorVinculos}"
+                SelectedItem="{Binding Colaborador.Vinculo}" />
+
+            <Entry Placeholder="Senha"
+                   IsPassword="True"
+                   Text="{Binding Colaborador.Senha}" />
+
+            <Entry Placeholder="Confirmar senha"
+                   IsPassword="True"
+                   Text="{Binding ConfirmarSenha}" />
+
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10"
+                  Margin="0,15,0,0">
+
+                <Button
+                    Grid.Column="0"
+                    Text="Cancelar"
+                    Command="{Binding CancelCommand}" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Salvar"
+                    Command="{Binding SaveColaboradorCommand}" />
+            </Grid>
+
+            <ActivityIndicator
+                IsVisible="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

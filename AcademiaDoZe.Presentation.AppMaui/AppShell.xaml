@@ -12,11 +12,30 @@
             ContentTemplate="{DataTemplate views:DashboardListPage}"
             Route="dashboard" />
     </FlyoutItem>
+    
+    <ShellContent
+    Title="Alunos"
+    ContentTemplate="{DataTemplate views:AlunoListPage}"
+    Route="alunos" />
 
     <FlyoutItem Title="Logradouros">
         <ShellContent
             ContentTemplate="{DataTemplate views:LogradouroListPage}"
             Route="logradouros" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Colaboradores">
+        <ShellContent
+        Title="Colaboradores"
+        ContentTemplate="{DataTemplate views:ColaboradorListPage}"
+        Route="colaboradores" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Configurações" Icon="academiadoze.png">
+        <ShellContent
+        Title="Configurações"
+        ContentTemplate="{DataTemplate views:ConfigPage}"
+        Route="ConfigPage" />
     </FlyoutItem>
 
 </Shell>

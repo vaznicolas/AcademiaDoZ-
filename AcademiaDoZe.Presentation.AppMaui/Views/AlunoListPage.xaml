@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoListPage"
+    Title="Alunos">
+
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+        <Button
+            Text="+ Novo aluno"
+            Command="{Binding AddAlunoCommand}" />
+
+        <Picker
+            Title="Filtrar por"
+            ItemsSource="{Binding FilterTypes}"
+            SelectedItem="{Binding SelectedFilterType}" />
+
+        <Entry
+            Placeholder="Digite sua pesquisa"
+            Text="{Binding SearchText}" />
+
+        <Button
+            Text="Pesquisar"
+            Command="{Binding SearchAlunosCommand}" />
+
+        <ActivityIndicator
+            IsVisible="{Binding IsBusy}"
+            IsRunning="{Binding IsBusy}" />
+
+        <CollectionView
+            ItemsSource="{Binding Alunos}"
+            SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <Label
+                    Text="Nenhum aluno encontrado."
+                    HorizontalOptions="Center"
+                    Margin="10" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Stroke="#CCCCCC"
+                        StrokeThickness="1"
+                        Padding="12"
+                        Margin="0,4">
+
+                        <VerticalStackLayout Spacing="6">
+
+                            <Label
+                                Text="{Binding Nome}"
+                                FontSize="18"
+                                FontAttributes="Bold" />
+
+                            <Label Text="{Binding Cpf, StringFormat='CPF: {0}'}" />
+                            <Label Text="{Binding Email, StringFormat='E-mail: {0}'}" />
+
+                            <Button
+                                Text="Editar"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditAlunoCommand}"
+                                CommandParameter="{Binding .}" />
+
+
+                            <Button Text="Excluir"
+        BackgroundColor="#0B2A56"
+        TextColor="White"
+        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteAlunoCommand}"
+        CommandParameter="{Binding .}" />
+
+
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

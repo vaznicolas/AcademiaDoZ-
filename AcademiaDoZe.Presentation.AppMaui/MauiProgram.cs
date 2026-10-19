@@ -27,7 +27,11 @@ public static class MauiProgram
 
         // Configuração do banco e serviços da aplicação
         AcademiaDoZe.Presentation.AppMaui.Configuration.ConfigurationHelper.ConfigureServices(
-        builder.Services);
+            builder.Services);
+        builder.Services.AddTransient<AlunoListViewModel>();
+        builder.Services.AddTransient<AlunoViewModel>();
+        builder.Services.AddTransient<AlunoListPage>();
+        builder.Services.AddTransient<AlunoPage>();
 
         // ViewModels
         builder.Services.AddTransient<DashboardListViewModel>();
@@ -35,6 +39,7 @@ public static class MauiProgram
         builder.Services.AddTransient<LogradouroViewModel>();
 
         // Pages
+        builder.Services.AddTransient<ConfigPage>();
         builder.Services.AddTransient<DashboardListPage>();
         builder.Services.AddTransient<LogradouroListPage>();
         builder.Services.AddTransient<LogradouroPage>();
@@ -42,7 +47,10 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-
+        builder.Services.AddTransient<ColaboradorListViewModel>();
+        builder.Services.AddTransient<ColaboradorViewModel>();
+        builder.Services.AddTransient<ColaboradorListPage>();
+        builder.Services.AddTransient<ColaboradorPage>();
         return builder.Build();
     }
 }
