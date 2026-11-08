@@ -277,6 +277,74 @@ public partial class AlunoViewModel : BaseViewModel
         }
     }
 
+    [RelayCommand]
+    public async Task SelecionarFotoAsync()
+    {
+        try
+        {
+            string? escolha = await Shell.Current.DisplayActionSheetAsync(
+                "Origem da imagem",
+                "Cancelar",
+                "Remover Foto",
+                "Galeria",
+                "Câmera");
+
+            if (escolha == "Remover Foto")
+            {
+                Aluno.Foto = null;
+                OnPropertyChanged(nameof(Aluno));
+                return;
+            }
+
+            FileResult? resultado = null;
+
+            if (escolha == "Galeria")
+            {
+                resultado = await FilePicker.Default.PickAsync(
+                    new PickOptions
+                    {
+                        PickerTitle = "Selecione uma imagem",
+                        FileTypes = FilePickerFileType.Images
+                    });
+            }
+            else if (escolha == "Câmera")
+            {
+                if (!MediaPicker.Default.IsCaptureSupported)
+                {
+                    await Shell.Current.DisplayAlertAsync(
+                        "Aviso",
+                        "A captura de foto não é suportada neste dispositivo.",
+                        "OK");
+                    return;
+                }
+
+                resultado = await MediaPicker.Default.CapturePhotoAsync();
+            }
+
+            if (resultado is null)
+                return;
+
+            using var stream = await resultado.OpenReadAsync();
+            using var memoria = new MemoryStream();
+
+            await stream.CopyToAsync(memoria);
+
+            Aluno.Foto = new ArquivoDto
+            {
+                Conteudo = memoria.ToArray()
+            };
+
+            OnPropertyChanged(nameof(Aluno));
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlertAsync(
+                "Erro",
+                $"Não foi possível selecionar a foto: {ex.Message}",
+                "OK");
+        }
+    }
+
     private List<string> ValidarAluno()
     {
         var erros = new List<string>();

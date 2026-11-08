@@ -1,4 +1,5 @@
-﻿// Nicolas Vaz
+﻿
+// Nicolas Vaz
 
 using System.Text;
 using AcademiaDoZe.Application.DTOs;
@@ -30,7 +31,7 @@ public static class AlunoMappingExtensions
             Foto = aluno.Foto != null
                 ? new ArquivoDto
                 {
-                    Conteudo = Encoding.UTF8.GetBytes(aluno.Foto.Valor)
+                    Conteudo = ObterBytesDaFoto(aluno.Foto.Valor)
                 }
                 : null
         };
@@ -52,27 +53,18 @@ public static class AlunoMappingExtensions
 
         var cpfResult = Cpf.Criar(alunoDto.Cpf);
         if (cpfResult.IsFailure)
-        {
             throw new InvalidOperationException(
-                $"Erro de validação do CPF: " +
-                $"{string.Join(", ", cpfResult.Notifications.Select(n => n.Mensagem))}");
-        }
+                $"Erro de validação do CPF: {string.Join(", ", cpfResult.Notifications.Select(n => n.Mensagem))}");
 
         var telefoneResult = Telefone.Criar(alunoDto.Telefone);
         if (telefoneResult.IsFailure)
-        {
             throw new InvalidOperationException(
-                $"Erro de validação do telefone: " +
-                $"{string.Join(", ", telefoneResult.Notifications.Select(n => n.Mensagem))}");
-        }
+                $"Erro de validação do telefone: {string.Join(", ", telefoneResult.Notifications.Select(n => n.Mensagem))}");
 
         var emailResult = Email.Criar(alunoDto.Email ?? string.Empty);
         if (emailResult.IsFailure)
-        {
             throw new InvalidOperationException(
-                $"Erro de validação do Email: " +
-                $"{string.Join(", ", emailResult.Notifications.Select(n => n.Mensagem))}");
-        }
+                $"Erro de validação do Email: {string.Join(", ", emailResult.Notifications.Select(n => n.Mensagem))}");
 
         var enderecoResult = Endereco.Criar(
             logradouroEntidade,
@@ -80,30 +72,15 @@ public static class AlunoMappingExtensions
             alunoDto.Complemento ?? string.Empty);
 
         if (enderecoResult.IsFailure)
-        {
             throw new InvalidOperationException(
-                $"Erro de validação do Endereço: " +
-                $"{string.Join(", ", enderecoResult.Notifications.Select(n => n.Mensagem))}");
-        }
+                $"Erro de validação do Endereço: {string.Join(", ", enderecoResult.Notifications.Select(n => n.Mensagem))}");
 
         var senhaResult = Senha.Criar(alunoDto.Senha ?? string.Empty);
         if (senhaResult.IsFailure)
-        {
             throw new InvalidOperationException(
-                $"Erro de validação da Senha: " +
-                $"{string.Join(", ", senhaResult.Notifications.Select(n => n.Mensagem))}");
-        }
+                $"Erro de validação da Senha: {string.Join(", ", senhaResult.Notifications.Select(n => n.Mensagem))}");
 
-        Arquivo? foto = null;
-
-        if (alunoDto.Foto?.Conteudo != null)
-        {
-            var fotoResult = Arquivo.Criar(
-                Encoding.UTF8.GetString(alunoDto.Foto.Conteudo));
-
-            if (fotoResult.IsSuccess)
-                foto = fotoResult.Value;
-        }
+        Arquivo? foto = CriarArquivoDaFoto(alunoDto.Foto);
 
         var result = Aluno.Criar(
             alunoDto.Id,
@@ -142,10 +119,8 @@ public static class AlunoMappingExtensions
             alunoDto.Email ?? aluno.Email.Valor);
 
         if (telefoneResult.IsFailure || emailResult.IsFailure)
-        {
             throw new InvalidOperationException(
                 "Erro de validação ao atualizar os dados do Aluno.");
-        }
 
         var enderecoResult = Endereco.Criar(
             logradouroEntidade,
@@ -153,22 +128,14 @@ public static class AlunoMappingExtensions
             alunoDto.Complemento ?? aluno.Endereco.Complemento);
 
         if (enderecoResult.IsFailure)
-        {
             throw new InvalidOperationException(
-                $"Erro de validação do Endereço: " +
-                $"{string.Join(", ", enderecoResult.Notifications.Select(n => n.Mensagem))}");
-        }
+                $"Erro de validação do Endereço: {string.Join(", ", enderecoResult.Notifications.Select(n => n.Mensagem))}");
 
+        // Mantém a foto existente quando nenhuma nova foto é enviada.
         Arquivo? foto = aluno.Foto;
 
-        if (alunoDto.Foto?.Conteudo != null)
-        {
-            var fotoResult = Arquivo.Criar(
-                Encoding.UTF8.GetString(alunoDto.Foto.Conteudo));
-
-            if (fotoResult.IsSuccess)
-                foto = fotoResult.Value;
-        }
+        if (alunoDto.Foto?.Conteudo is { Length: > 0 })
+            foto = CriarArquivoDaFoto(alunoDto.Foto);
 
         var senhaResult = Senha.Criar(
             !string.IsNullOrWhiteSpace(alunoDto.Senha)
@@ -176,11 +143,8 @@ public static class AlunoMappingExtensions
                 : aluno.Senha.Valor);
 
         if (senhaResult.IsFailure)
-        {
             throw new InvalidOperationException(
-                $"Erro de validação da Senha: " +
-                $"{string.Join(", ", senhaResult.Notifications.Select(n => n.Mensagem))}");
-        }
+                $"Erro de validação da Senha: {string.Join(", ", senhaResult.Notifications.Select(n => n.Mensagem))}");
 
         var result = Aluno.Criar(
             aluno.Id,
@@ -196,5 +160,33 @@ public static class AlunoMappingExtensions
             foto!);
 
         return result;
+    }
+
+    private static Arquivo? CriarArquivoDaFoto(ArquivoDto? fotoDto)
+    {
+        if (fotoDto?.Conteudo is not { Length: > 0 })
+            return null;
+
+        var conteudoBase64 = Convert.ToBase64String(fotoDto.Conteudo);
+        var resultado = Arquivo.Criar(conteudoBase64);
+
+        if (resultado.IsFailure)
+            throw new InvalidOperationException(
+                "Não foi possível converter a foto do aluno.");
+
+        return resultado.Value;
+    }
+
+    private static byte[] ObterBytesDaFoto(string valor)
+    {
+        try
+        {
+            return Convert.FromBase64String(valor);
+        }
+        catch (FormatException)
+        {
+            // Compatibilidade com fotos salvas no formato antigo.
+            return Encoding.UTF8.GetBytes(valor);
+        }
     }
 }

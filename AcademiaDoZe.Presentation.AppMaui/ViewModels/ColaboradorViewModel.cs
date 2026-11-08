@@ -303,6 +303,17 @@ public partial class ColaboradorViewModel : BaseViewModel
                 "A operação demorou demais. Verifique a conexão.",
                 "OK");
         }
+        catch (InvalidOperationException ex)
+            when (ex.Message.Contains(
+                "Já existe um colaborador cadastrado com o CPF",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            await Shell.Current.DisplayAlertAsync(
+                "CPF duplicado",
+                "Já existe um colaborador cadastrado com esse CPF. " +
+                "Confira o número informado ou consulte os colaboradores cadastrados.",
+                "OK");
+        }
         catch (Exception ex)
         {
             await Shell.Current.DisplayAlertAsync(
@@ -311,6 +322,9 @@ public partial class ColaboradorViewModel : BaseViewModel
                 "OK");
         }
         finally
+        {
+            IsBusy = false;
+        }
         {
             IsBusy = false;
         }
