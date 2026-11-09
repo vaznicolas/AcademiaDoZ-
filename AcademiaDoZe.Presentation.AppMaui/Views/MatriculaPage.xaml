@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaPage"
+             Title="Cadastro de Matrícula">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FotoToImageSourceConverter
+                x:Key="FotoToImageSourceConverter" />
+
+            <converters:EnumDisplayConverter
+                x:Key="EnumDisplayConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+
+            <Label Text="Cadastro de Matrícula"
+                   FontSize="24"
+                   FontAttributes="Bold" />
+
+            <!-- Busca de aluno -->
+            <Label Text="Selecionar aluno"
+                   FontAttributes="Bold" />
+
+            <SearchBar Placeholder="Digite o nome do aluno"
+                       Text="{Binding BuscaAluno}"
+                       SearchCommand="{Binding BuscarAlunosCommand}" />
+
+            <CollectionView ItemsSource="{Binding AlunosDisponiveis}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding AlunoSelecionado, Mode=TwoWay}"
+                            HeightRequest="180">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="8"
+                              ColumnDefinitions="*,Auto">
+
+                            <Label Grid.Column="0"
+                                   Text="{Binding Nome}"
+                                   VerticalOptions="Center" />
+
+                            <Label Grid.Column="1"
+                                   Text="{Binding Cpf}"
+                                   VerticalOptions="Center"
+                                   FontSize="12" />
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Dados do aluno -->
+            <Label Text="Dados do aluno"
+                   FontAttributes="Bold"
+                   FontSize="18" />
+
+            <Label Text="{Binding Matricula.AlunoMatricula.Nome,
+                                  StringFormat='Nome: {0}'}" />
+
+            <Label Text="{Binding Matricula.AlunoMatricula.Cpf,
+                                  StringFormat='CPF: {0}'}" />
+
+            <Label Text="{Binding Matricula.AlunoMatricula.DataNascimento,
+                                  StringFormat='Nascimento: {0:dd/MM/yyyy}'}" />
+
+            <Image Source="{Binding Matricula.AlunoMatricula.Foto,
+                                     Converter={StaticResource FotoToImageSourceConverter}}"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   Aspect="AspectFill"
+                   HorizontalOptions="Start" />
+
+            <BoxView HeightRequest="1"
+                     Color="Gray" />
+
+            <!-- Plano -->
+            <Label Text="Plano"
+                   FontAttributes="Bold" />
+
+            <Picker x:Name="PlanoPicker"
+                    Title="Selecione o plano"
+                    ItemsSource="{Binding PlanoTipos}"
+                    SelectedItem="{Binding Matricula.Plano}"
+                    SelectedIndexChanged="OnPlanoChanged" />
+
+            <!-- Datas -->
+            <Label Text="Data de início"
+                   FontAttributes="Bold" />
+
+            <DatePicker x:Name="DataInicioPicker"
+                        DateSelected="OnDataInicioChanged" />
+
+            <Label Text="Data final"
+                   FontAttributes="Bold" />
+
+            <DatePicker x:Name="DataFimPicker"
+                        IsEnabled="False" />
+
+            <!-- Objetivo -->
+            <Label Text="Objetivo"
+                   FontAttributes="Bold" />
+
+            <Editor Text="{Binding Matricula.Objetivo}"
+                    Placeholder="Descreva o objetivo da matrícula"
+                    AutoSize="TextChanges"
+                    HeightRequest="100" />
+
+            <!-- Restrições -->
+            <Label Text="Restrições médicas"
+                   FontAttributes="Bold"
+                   FontSize="18" />
+
+            <CollectionView ItemsSource="{Binding RestricoesMulti}"
+                            SelectionMode="None">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <HorizontalStackLayout Padding="5"
+                                               Spacing="10">
+
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+
+                            <Label Text="{Binding Value,
+                                                  Converter={StaticResource EnumDisplayConverter}}"
+                                   VerticalOptions="Center" />
+
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Observações -->
+            <Label Text="Observações"
+                   FontAttributes="Bold" />
+
+            <Editor Text="{Binding Matricula.Observacoes}"
+                    Placeholder="Observações adicionais"
+                    AutoSize="TextChanges"
+                    HeightRequest="100" />
+
+            <!-- Laudo médico -->
+            <Label Text="Laudo médico"
+                   FontAttributes="Bold"
+                   FontSize="18" />
+
+            <Label Text="{Binding LaudoStatus}" />
+
+            <Button Text="Selecionar laudo médico"
+                    Command="{Binding SelecionarFotoCommand}" />
+
+            <Button Text="Remover laudo"
+                    Command="{Binding RemoverLaudoCommand}" />
+
+            <BoxView HeightRequest="1"
+                     Color="Gray" />
+
+            <!-- Botões -->
+            <Button Text="Salvar matrícula"
+                    Command="{Binding SaveMatriculaCommand}" />
+
+            <Button Text="Cancelar"
+                    Command="{Binding CancelCommand}"
+                    BackgroundColor="Gray" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

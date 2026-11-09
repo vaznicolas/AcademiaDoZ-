@@ -1,4 +1,5 @@
-﻿// Nicolas Vaz
+﻿
+// Nicolas Vaz
 
 using AcademiaDoZe.Presentation.AppMaui.Views;
 
@@ -9,8 +10,12 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
+
         Routing.RegisterRoute("aluno", typeof(AlunoPage));
         Routing.RegisterRoute("colaborador", typeof(ColaboradorPage));
+        Routing.RegisterRoute("matricula", typeof(MatriculaPage));
+        Routing.RegisterRoute("matriculas", typeof(MatriculaListPage));
+
         RegisterRoutes();
     }
 

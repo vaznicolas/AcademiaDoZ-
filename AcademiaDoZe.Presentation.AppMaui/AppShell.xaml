@@ -12,11 +12,25 @@
             ContentTemplate="{DataTemplate views:DashboardListPage}"
             Route="dashboard" />
     </FlyoutItem>
-    
+
     <ShellContent
-    Title="Alunos"
-    ContentTemplate="{DataTemplate views:AlunoListPage}"
-    Route="alunos" />
+        Title="Alunos"
+        ContentTemplate="{DataTemplate views:AlunoListPage}"
+        Route="alunos" />
+
+    <FlyoutItem Title="Colaboradores">
+        <ShellContent
+            Title="Colaboradores"
+            ContentTemplate="{DataTemplate views:ColaboradorListPage}"
+            Route="colaboradores" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Matrículas">
+        <ShellContent
+            Title="Matrículas"
+            ContentTemplate="{DataTemplate views:MatriculaListPage}"
+            Route="matriculas" />
+    </FlyoutItem>
 
     <FlyoutItem Title="Logradouros">
         <ShellContent
@@ -24,18 +38,11 @@
             Route="logradouros" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Colaboradores">
-        <ShellContent
-        Title="Colaboradores"
-        ContentTemplate="{DataTemplate views:ColaboradorListPage}"
-        Route="colaboradores" />
-    </FlyoutItem>
-
     <FlyoutItem Title="Configurações" Icon="academiadoze.png">
         <ShellContent
-        Title="Configurações"
-        ContentTemplate="{DataTemplate views:ConfigPage}"
-        Route="ConfigPage" />
+            Title="Configurações"
+            ContentTemplate="{DataTemplate views:ConfigPage}"
+            Route="ConfigPage" />
     </FlyoutItem>
 
 </Shell>
