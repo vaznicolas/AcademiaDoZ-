@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ControleAcessoPage"
+    Title="Controle de Acesso">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="24"
+            Spacing="18">
+
+            <Label
+                Text="Controle de Acesso"
+                FontSize="28"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="Catraca - Academia do Zé"
+                FontSize="16"
+                TextColor="Gray" />
+
+            <Frame Padding="20">
+                <VerticalStackLayout Spacing="15">
+
+                    <Label
+                        Text="Tipo de pessoa"
+                        FontAttributes="Bold" />
+
+                    <Picker
+                        x:Name="TipoPessoaPicker"
+                        Title="Selecione"
+                        SelectedIndexChanged="TipoPessoaPicker_SelectedIndexChanged">
+                        <Picker.Items>
+                            <x:String>Aluno</x:String>
+                            <x:String>Colaborador</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <Label
+                        Text="Pessoa"
+                        FontAttributes="Bold" />
+
+                    <Picker
+                        x:Name="PessoaPicker"
+                        Title="Selecione uma pessoa"
+                        ItemDisplayBinding="{Binding Nome}" />
+
+                    <Button
+                        Text="Registrar Entrada"
+                        Clicked="RegistrarEntrada_Clicked" />
+
+                    <Button
+                        Text="Registrar Saída"
+                        Clicked="RegistrarSaida_Clicked" />
+
+                    <Label
+                        x:Name="MensagemLabel"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        LineBreakMode="WordWrap" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

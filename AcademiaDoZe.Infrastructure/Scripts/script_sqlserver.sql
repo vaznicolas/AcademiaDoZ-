@@ -1,4 +1,5 @@
-﻿-- ============================================================
+﻿
+-- ============================================================
 -- SCRIPT DE CRIAÇÃO DO BANCO DE DADOS: db_academia_do_ze (SQL Server)
 -- Baseado na camada de domínio AcademiaDoZe.Domain
 -- ============================================================
@@ -138,6 +139,11 @@ BEGIN
 END;
 
 
+-- ============================================================
+-- CONTROLE DE ACESSO - AVALIAÇÃO 03
+-- Entrada e saída de alunos e colaboradores
+-- ============================================================
+
 IF OBJECT_ID(N'dbo.tb_acesso', N'U') IS NULL
 BEGIN
     CREATE TABLE tb_acesso
@@ -150,8 +156,13 @@ BEGIN
 
         pessoa_id INT NOT NULL,
 
+        -- Data e hora da entrada
         data_hora DATETIME NOT NULL
             CONSTRAINT DF_tb_acesso_data_hora DEFAULT GETDATE(),
+
+        -- Data e hora da saída
+        -- NULL significa que a pessoa ainda está na academia
+        data_hora_saida DATETIME NULL,
 
         CONSTRAINT PK_tb_acesso PRIMARY KEY (id_acesso)
     );
@@ -161,4 +172,17 @@ BEGIN
 
     CREATE INDEX IX_tb_acesso_data_hora
         ON tb_acesso(data_hora);
+END;
+
+
+-- ============================================================
+-- ATUALIZAÇÃO PARA BANCOS QUE JÁ POSSUEM A TABELA tb_acesso
+-- Adiciona a coluna de saída sem apagar registros existentes
+-- ============================================================
+
+IF OBJECT_ID(N'dbo.tb_acesso', N'U') IS NOT NULL
+   AND COL_LENGTH('dbo.tb_acesso', 'data_hora_saida') IS NULL
+BEGIN
+    ALTER TABLE dbo.tb_acesso
+    ADD data_hora_saida DATETIME NULL;
 END;

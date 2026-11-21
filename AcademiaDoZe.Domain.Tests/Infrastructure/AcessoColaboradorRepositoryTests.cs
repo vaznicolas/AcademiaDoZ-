@@ -44,7 +44,7 @@ public class AcessoColaboradorRepositoryTests
     [Fact]
     public async Task Deve_Adicionar_Acesso_Colaborador()
     {
-        var repository = new AcessoColaboradorRepository();
+        var repository = new AcessoColaboradorRepositoryEmMemoria();
         var colaborador = CriarColaborador(1);
 
         var acesso = AcessoColaborador.Criar(
@@ -61,7 +61,7 @@ public class AcessoColaboradorRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acessos_Por_Colaborador()
     {
-        var repository = new AcessoColaboradorRepository();
+        var repository = new AcessoColaboradorRepositoryEmMemoria();
         var colaborador = CriarColaborador(1);
 
         await repository.Adicionar(
@@ -87,7 +87,7 @@ public class AcessoColaboradorRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acessos_Por_Periodo()
     {
-        var repository = new AcessoColaboradorRepository();
+        var repository = new AcessoColaboradorRepositoryEmMemoria();
         var colaborador = CriarColaborador(1);
 
         var inicio = new DateTime(2026, 1, 1);
@@ -109,7 +109,7 @@ public class AcessoColaboradorRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acesso_Aberto()
     {
-        var repository = new AcessoColaboradorRepository();
+        var repository = new AcessoColaboradorRepositoryEmMemoria();
         var colaborador = CriarColaborador(1);
 
         var acesso = AcessoColaborador.Criar(
@@ -129,7 +129,7 @@ public class AcessoColaboradorRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acesso_Por_Data()
     {
-        var repository = new AcessoColaboradorRepository();
+        var repository = new AcessoColaboradorRepositoryEmMemoria();
         var colaborador = CriarColaborador(1);
 
         var data = new DateTime(2026, 1, 10, 8, 0, 0);
@@ -153,7 +153,7 @@ public class AcessoColaboradorRepositoryTests
     [Fact]
     public async Task Deve_Retornar_Nulo_Quando_Nao_Houver_Acesso_Aberto()
     {
-        var repository = new AcessoColaboradorRepository();
+        var repository = new AcessoColaboradorRepositoryEmMemoria();
         var colaborador = CriarColaborador(1);
 
         await repository.Adicionar(

@@ -1,5 +1,4 @@
-﻿// Nicolas Vaz
-
+﻿
 using AcademiaDoZe.Domain.Entities;
 
 namespace AcademiaDoZe.Domain.Repositories;
@@ -20,6 +19,11 @@ public interface IAcessoColaboradorRepository : IRepository<AcessoColaborador>
         CancellationToken cancellationToken = default);
 
     Task<AcessoColaborador?> ObterPorData(
+        int colaboradorId,
+        DateTime data,
+        CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<AcessoColaborador>> ObterTodosPorData(
         int colaboradorId,
         DateTime data,
         CancellationToken cancellationToken = default);

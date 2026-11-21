@@ -41,7 +41,7 @@ public class AcessoAlunoRepositoryTests
     [Fact]
     public async Task Deve_Adicionar_Acesso_Aluno()
     {
-        var repository = new AcessoAlunoRepository();
+        var repository = new AcessoAlunoRepositoryEmMemoria();
         var aluno = CriarAluno(1);
 
         var acesso = AcessoAluno.Criar(
@@ -58,7 +58,7 @@ public class AcessoAlunoRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acessos_Por_Aluno()
     {
-        var repository = new AcessoAlunoRepository();
+        var repository = new AcessoAlunoRepositoryEmMemoria();
         var aluno = CriarAluno(1);
 
         await repository.Adicionar(
@@ -75,7 +75,7 @@ public class AcessoAlunoRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acessos_Por_Periodo()
     {
-        var repository = new AcessoAlunoRepository();
+        var repository = new AcessoAlunoRepositoryEmMemoria();
         var aluno = CriarAluno(1);
 
         var inicio = new DateTime(2026, 1, 1);
@@ -96,7 +96,7 @@ public class AcessoAlunoRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acesso_Aberto()
     {
-        var repository = new AcessoAlunoRepository();
+        var repository = new AcessoAlunoRepositoryEmMemoria();
         var aluno = CriarAluno(1);
 
         var acesso = AcessoAluno.Criar(
@@ -115,7 +115,7 @@ public class AcessoAlunoRepositoryTests
     [Fact]
     public async Task Deve_Obter_Acesso_Por_Data()
     {
-        var repository = new AcessoAlunoRepository();
+        var repository = new AcessoAlunoRepositoryEmMemoria();
         var aluno = CriarAluno(1);
 
         var data = new DateTime(2026, 1, 10, 8, 0, 0);
@@ -138,7 +138,7 @@ public class AcessoAlunoRepositoryTests
     [Fact]
     public async Task Deve_Retornar_Nulo_Quando_Nao_Houver_Acesso_Aberto()
     {
-        var repository = new AcessoAlunoRepository();
+        var repository = new AcessoAlunoRepositoryEmMemoria();
         var aluno = CriarAluno(1);
 
         await repository.Adicionar(

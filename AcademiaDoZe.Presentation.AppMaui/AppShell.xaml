@@ -32,6 +32,14 @@
             Route="matriculas" />
     </FlyoutItem>
 
+    <!-- Controle de Acesso / Catraca -->
+    <FlyoutItem Title="Controle de Acesso">
+        <ShellContent
+            Title="Controle de Acesso"
+            ContentTemplate="{DataTemplate views:ControleAcessoPage}"
+            Route="controleacesso" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Logradouros">
         <ShellContent
             ContentTemplate="{DataTemplate views:LogradouroListPage}"

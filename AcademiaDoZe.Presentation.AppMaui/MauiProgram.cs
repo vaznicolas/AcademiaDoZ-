@@ -35,6 +35,8 @@ public static class MauiProgram
         builder.Services.AddTransient<AlunoViewModel>();
         builder.Services.AddTransient<AlunoListPage>();
         builder.Services.AddTransient<AlunoPage>();
+        builder.Services.AddTransient<ControleAcessoPage>();
+
 
         // Dashboard e Logradouro
         builder.Services.AddTransient<DashboardListViewModel>();

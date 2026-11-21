@@ -1,4 +1,5 @@
-﻿// Nicolas Vaz
+﻿
+// Nicolas Vaz
 
 using AcademiaDoZe.Application.Interfaces;
 using AcademiaDoZe.Application.Services;
@@ -81,6 +82,55 @@ public static class ApplicationDependencyInjection
                         config.ConnectionString,
                         config.DatabaseType));
             });
+
+        // Fábrica do AcessoAlunoRepository
+        services.AddTransient(
+            provider =>
+            {
+                var config =
+                    provider.GetRequiredService<RepositoryConfig>();
+
+                return (Func<IAcessoAlunoRepository>)(() =>
+                    new AcessoAlunoRepository(
+                        config.ConnectionString,
+                        config.DatabaseType,
+                        new AlunoRepository(
+                            config.ConnectionString,
+                            config.DatabaseType)));
+            });
+
+
+        // Fábrica do AcessoColaboradorRepository
+        services.AddTransient(
+            provider =>
+            {
+                var config =
+                    provider.GetRequiredService<RepositoryConfig>();
+
+                return (Func<IAcessoColaboradorRepository>)(() =>
+                    new AcessoColaboradorRepository(
+                        config.ConnectionString,
+                        config.DatabaseType,
+                        new ColaboradorRepository(
+                            config.ConnectionString,
+                            config.DatabaseType)));
+            });
+
+
+        // Serviço de controle de acesso dos alunos
+        services.AddTransient<IAcessoAlunoService>(provider =>
+            new AcessoAlunoService(
+                provider.GetRequiredService<Func<IAlunoRepository>>()(),
+                provider.GetRequiredService<Func<IMatriculaRepository>>()(),
+                provider.GetRequiredService<Func<IAcessoAlunoRepository>>()()
+            ));
+
+        // Serviço de controle de acesso dos colaboradores
+        services.AddTransient<IAcessoColaboradorService>(provider =>
+            new AcessoColaboradorService(
+                provider.GetRequiredService<Func<IColaboradorRepository>>()(),
+                provider.GetRequiredService<Func<IAcessoColaboradorRepository>>()()
+            ));
 
         return services;
     }
