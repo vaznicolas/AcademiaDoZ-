@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -6,219 +7,315 @@
     x:Class="AcademiaDoZe.Presentation.AppMaui.Views.DashboardListPage"
     x:DataType="vm:DashboardListViewModel"
     Title="{Binding Title}"
-    BackgroundColor="#F5F7FA">
+    BackgroundColor="{StaticResource OldSchoolBackground}">
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="20"
-            Spacing="20">
+        Padding="20"
+        Spacing="16">
 
-            <!-- Logo -->
-            <Image
-                Source="academiadoze.png"
-                HeightRequest="110"
-                Aspect="AspectFit"
-                HorizontalOptions="Center" />
 
-            <!-- Cabeçalho -->
-            <VerticalStackLayout
-                Spacing="4"
-                HorizontalOptions="Center">
+            <!-- CABECALHO OLD SCHOOL COMPACTO -->
+
+            <Border
+    BackgroundColor="#071A47"
+    Stroke="#0B2A6F"
+    StrokeThickness="2"
+    StrokeShape="RoundRectangle 8"
+    Padding="18">
+
+                <Grid
+        ColumnDefinitions="100,*"
+        ColumnSpacing="22"
+        MinimumHeightRequest="115">
+
+                    <!-- LOGO -->
+
+                    <Image
+            Grid.Column="0"
+            Source="academiadoze.png"
+            WidthRequest="95"
+            HeightRequest="95"
+            Aspect="AspectFit"
+            VerticalOptions="Center" />
+
+                    <!-- IDENTIDADE -->
+
+                    <VerticalStackLayout
+            Grid.Column="1"
+            Spacing="8"
+            VerticalOptions="Center">
+
+                        <Label
+                Text="ACADEMIA DO ZÉ"
+                FontFamily="Graduate"
+                FontSize="26"
+                TextColor="White"
+                LineBreakMode="WordWrap" />
+
+                        <Label
+                Text="PAINEL ADMINISTRATIVO"
+                FontFamily="Oswald"
+                FontSize="15"
+                CharacterSpacing="2"
+                TextColor="White" />
+
+                        <BoxView
+                Color="White"
+                HeightRequest="2"
+                HorizontalOptions="Fill" />
+
+                    </VerticalStackLayout>
+
+                </Grid>
+
+            </Border>
+
+
+            <!-- TITULO DA SECAO -->
+
+            <VerticalStackLayout Spacing="6">
 
                 <Label
-                    Text="ACADEMIA DO ZÉ"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    TextColor="#073B9C"
-                    HorizontalOptions="Center" />
+                    Text="VISÃO GERAL"
+                    Style="{StaticResource OldSchoolPageTitle}" />
 
                 <Label
-                    Text="PAINEL ADMINISTRATIVO"
-                    FontSize="13"
-                    FontAttributes="Bold"
-                    TextColor="#061F5C"
-                    HorizontalOptions="Center" />
+                    Text="Indicadores da Academia do Zé"
+                    Style="{StaticResource OldSchoolSecondaryText}" />
 
             </VerticalStackLayout>
 
-            <!-- Indicadores -->
+            <!-- INDICADORES -->
+
             <Grid
                 ColumnDefinitions="*,*"
                 RowDefinitions="Auto,Auto"
-                ColumnSpacing="12"
-                RowSpacing="12">
+                ColumnSpacing="16"
+                RowSpacing="16">
 
-                <!-- Logradouros -->
+                <!-- LOGRADOUROS -->
+
                 <Border
                     Grid.Row="0"
                     Grid.Column="0"
                     Padding="0"
                     BackgroundColor="White"
-                    Stroke="#073B9C"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
+                    Stroke="{StaticResource OldSchoolPrimary}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 8">
 
                     <VerticalStackLayout Spacing="0">
 
-                        <Border
-                            BackgroundColor="#073B9C"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 12,12,0,0"
-                            Padding="12,7">
+                        <Grid
+                            BackgroundColor="{StaticResource OldSchoolPrimary}"
+                            Padding="16,12">
 
                             <Label
                                 Text="LOGRADOUROS"
-                                FontSize="12"
-                                FontAttributes="Bold"
+                                FontFamily="Oswald"
+                                FontSize="16"
+                                CharacterSpacing="1"
                                 TextColor="White" />
 
-                        </Border>
+                        </Grid>
 
                         <Label
                             Text="{Binding TotalLogradouros}"
-                            FontSize="34"
-                            FontAttributes="Bold"
-                            TextColor="#061F5C"
-                            HorizontalOptions="Center"
-                            Margin="0,14,0,16" />
+                            FontFamily="Graduate"
+                            FontSize="38"
+                            TextColor="{StaticResource OldSchoolPrimary}"
+                            HorizontalTextAlignment="Center"
+                            Margin="12,20,12,22" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
-                <!-- Alunos -->
+                <!-- ALUNOS -->
+
                 <Border
                     Grid.Row="0"
                     Grid.Column="1"
                     Padding="0"
                     BackgroundColor="White"
-                    Stroke="#073B9C"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
+                    Stroke="{StaticResource OldSchoolPrimary}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 8">
 
                     <VerticalStackLayout Spacing="0">
 
-                        <Border
-                            BackgroundColor="#073B9C"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 12,12,0,0"
-                            Padding="12,7">
+                        <Grid
+                            BackgroundColor="{StaticResource OldSchoolPrimary}"
+                            Padding="16,12">
 
                             <Label
                                 Text="ALUNOS"
-                                FontSize="12"
-                                FontAttributes="Bold"
+                                FontFamily="Oswald"
+                                FontSize="16"
+                                CharacterSpacing="1"
                                 TextColor="White" />
 
-                        </Border>
+                        </Grid>
 
                         <Label
                             Text="{Binding TotalAlunos}"
-                            FontSize="34"
-                            FontAttributes="Bold"
-                            TextColor="#061F5C"
-                            HorizontalOptions="Center"
-                            Margin="0,14,0,16" />
+                            FontFamily="Graduate"
+                            FontSize="38"
+                            TextColor="{StaticResource OldSchoolPrimary}"
+                            HorizontalTextAlignment="Center"
+                            Margin="12,20,12,22" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
-                <!-- Colaboradores -->
+                <!-- COLABORADORES -->
+
                 <Border
                     Grid.Row="1"
                     Grid.Column="0"
                     Padding="0"
                     BackgroundColor="White"
-                    Stroke="#073B9C"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
+                    Stroke="{StaticResource OldSchoolPrimary}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 8">
 
                     <VerticalStackLayout Spacing="0">
 
-                        <Border
-                            BackgroundColor="#073B9C"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 12,12,0,0"
-                            Padding="12,7">
+                        <Grid
+                            BackgroundColor="{StaticResource OldSchoolPrimary}"
+                            Padding="16,12">
 
                             <Label
                                 Text="COLABORADORES"
-                                FontSize="12"
-                                FontAttributes="Bold"
+                                FontFamily="Oswald"
+                                FontSize="16"
+                                CharacterSpacing="1"
                                 TextColor="White" />
 
-                        </Border>
+                        </Grid>
 
                         <Label
                             Text="{Binding TotalColaboradores}"
-                            FontSize="34"
-                            FontAttributes="Bold"
-                            TextColor="#061F5C"
-                            HorizontalOptions="Center"
-                            Margin="0,14,0,16" />
+                            FontFamily="Graduate"
+                            FontSize="38"
+                            TextColor="{StaticResource OldSchoolPrimary}"
+                            HorizontalTextAlignment="Center"
+                            Margin="12,20,12,22" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
-                <!-- Matrículas -->
+                <!-- MATRICULAS -->
+
                 <Border
                     Grid.Row="1"
                     Grid.Column="1"
                     Padding="0"
                     BackgroundColor="White"
-                    Stroke="#073B9C"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
+                    Stroke="{StaticResource OldSchoolPrimary}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 8">
 
                     <VerticalStackLayout Spacing="0">
 
-                        <Border
-                            BackgroundColor="#073B9C"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 12,12,0,0"
-                            Padding="12,7">
+                        <Grid
+                            BackgroundColor="{StaticResource OldSchoolPrimary}"
+                            Padding="16,12">
 
                             <Label
                                 Text="MATRÍCULAS"
-                                FontSize="12"
-                                FontAttributes="Bold"
+                                FontFamily="Oswald"
+                                FontSize="16"
+                                CharacterSpacing="1"
                                 TextColor="White" />
 
-                        </Border>
+                        </Grid>
 
                         <Label
                             Text="{Binding TotalMatriculas}"
-                            FontSize="34"
-                            FontAttributes="Bold"
-                            TextColor="#061F5C"
-                            HorizontalOptions="Center"
-                            Margin="0,14,0,16" />
+                            FontFamily="Graduate"
+                            FontSize="38"
+                            TextColor="{StaticResource OldSchoolPrimary}"
+                            HorizontalTextAlignment="Center"
+                            Margin="12,20,12,22" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
             </Grid>
 
-            <!-- Acesso aos logradouros -->
-            <Button
-                Text="GERENCIAR LOGRADOUROS"
-                Command="{Binding NavigateToLogradourosCommand}"
-                BackgroundColor="#073B9C"
-                TextColor="White"
-                FontAttributes="Bold"
-                FontSize="15"
-                CornerRadius="8"
-                HeightRequest="52" />
+            <!-- ACESSO RAPIDO EXISTENTE -->
+
+
+            <!-- ACESSOS RAPIDOS OLD SCHOOL -->
+
+            <VerticalStackLayout Spacing="14">
+
+                <Label
+        Text="ACESSO RÁPIDO"
+        Style="{StaticResource OldSchoolSubtitle}" />
+
+                <Grid
+        ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto"
+        ColumnSpacing="14"
+        RowSpacing="14">
+
+                    <!-- ALUNOS -->
+
+                    <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="ALUNOS"
+            Command="{Binding NavigateToAlunosCommand}"
+            Style="{StaticResource OldSchoolPrimaryButton}"
+            HeightRequest="56" />
+
+                    <!-- MATRICULAS -->
+
+                    <Button
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="MATRÍCULAS"
+            Command="{Binding NavigateToMatriculasCommand}"
+            Style="{StaticResource OldSchoolPrimaryButton}"
+            HeightRequest="56" />
+
+                    <!-- CONTROLE DE ACESSO -->
+
+                    <Button
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="CONTROLE DE ACESSO"
+            Command="{Binding NavigateToControleAcessoCommand}"
+            Style="{StaticResource OldSchoolSecondaryButton}"
+            HeightRequest="56" />
+
+                    <!-- LOGRADOUROS -->
+
+                    <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="LOGRADOUROS"
+            Command="{Binding NavigateToLogradourosCommand}"
+            Style="{StaticResource OldSchoolSecondaryButton}"
+            HeightRequest="56" />
+
+                </Grid>
+
+            </VerticalStackLayout>
+
+
+            <!-- CARREGAMENTO -->
 
             <ActivityIndicator
                 IsRunning="{Binding IsBusy}"
                 IsVisible="{Binding IsBusy}"
-                Color="#073B9C" />
+                Color="{StaticResource OldSchoolPrimary}"
+                HorizontalOptions="Center" />
 
         </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>
+

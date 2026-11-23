@@ -115,4 +115,27 @@ public partial class DashboardListViewModel : BaseViewModel
     {
         await Shell.Current.GoToAsync("//logradouros");
     }
+
+
+    // Atalho para a página de alunos
+    [RelayCommand]
+    private async Task NavigateToAlunosAsync()
+    {
+        await Shell.Current.GoToAsync("//alunos");
+    }
+
+    // Atalho para a página de matrículas
+    [RelayCommand]
+    private async Task NavigateToMatriculasAsync()
+    {
+        await Shell.Current.GoToAsync("//matriculas");
+    }
+
+    // Atalho para o controle de acesso
+    [RelayCommand]
+    private async Task NavigateToControleAcessoAsync()
+    {
+        await Shell.Current.GoToAsync("//controleacesso");
+    }
+
 }

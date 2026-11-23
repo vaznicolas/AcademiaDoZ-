@@ -41,4 +41,21 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+
+    <!-- ACADEMIA DO ZE - IDENTIDADE OLD SCHOOL -->
+
+    <Color x:Key="OldSchoolPrimary">#0B2A6F</Color>
+    <Color x:Key="OldSchoolPrimaryDark">#071A47</Color>
+
+    <Color x:Key="OldSchoolBackground">#F5F3EC</Color>
+    <Color x:Key="OldSchoolCard">#FFFFFF</Color>
+
+    <Color x:Key="OldSchoolDanger">#B3261E</Color>
+    <Color x:Key="OldSchoolSuccess">#2E7D32</Color>
+    <Color x:Key="OldSchoolWarning">#C77700</Color>
+
+    <Color x:Key="OldSchoolTextSecondary">#5A6478</Color>
+
+
 </ResourceDictionary>

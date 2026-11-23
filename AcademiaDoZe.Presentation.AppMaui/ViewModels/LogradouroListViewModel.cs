@@ -1,5 +1,4 @@
 // Nicolas Vaz
-
 using System.Collections.ObjectModel;
 using AcademiaDoZe.Application.DTOs;
 using AcademiaDoZe.Application.Interfaces;
@@ -10,15 +9,8 @@ namespace AcademiaDoZe.Presentation.AppMaui.ViewModels;
 public partial class LogradouroListViewModel : BaseViewModel
 {
     private readonly ILogradouroService _logradouroService;
-
     public ObservableCollection<LogradouroDto> Logradouros { get; } = new();
-
-    public List<string> FilterTypes { get; } =
-[
-    "Todos",
-    "CEP",
-    "Cidade"
-];
+    public List<string> FilterTypes { get; } = ["Todos", "CEP", "Cidade"];
 
     private string _selectedFilterType = "Todos";
     public string SelectedFilterType
@@ -43,190 +35,131 @@ public partial class LogradouroListViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoadLogradourosAsync()
     {
-        if (IsBusy)
-            return;
-
+        if (IsBusy) return;
         try
         {
             IsBusy = true;
-
-            using var cts = new CancellationTokenSource(
-            TimeSpan.FromMinutes(2));
-
-            var logradouros =
-                await _logradouroService.ObterTodosAsync(cts.Token);
-
+            using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+            var logradouros = await _logradouroService.ObterTodosAsync(cts.Token);
             Logradouros.Clear();
-
-            foreach (var logradouro in logradouros)
-            {
-                Logradouros.Add(logradouro);
-            }
+            foreach (var logradouro in logradouros) Logradouros.Add(logradouro);
         }
         catch (OperationCanceledException)
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Tempo Esgotado",
-                "O carregamento dos logradouros expirou.",
-                "OK");
+            await Shell.Current.DisplayAlertAsync("Tempo Esgotado",
+                "O carregamento dos logradouros expirou.", "OK");
         }
         catch (Exception ex)
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Erro",
-                $"Erro ao carregar logradouros: {ex.Message}",
-                "OK");
+            await Shell.Current.DisplayAlertAsync("Erro",
+                $"Erro ao carregar logradouros: {ex.Message}", "OK");
         }
-        finally
-        {
-            IsBusy = false;
-        }
+        finally { IsBusy = false; }
     }
 
     [RelayCommand]
     private async Task RefreshAsync()
     {
         IsRefreshing = true;
-
-        try
-        {
-            await LoadLogradourosAsync();
-        }
-        finally
-        {
-            IsRefreshing = false;
-        }
+        try { await LoadLogradourosAsync(); }
+        finally { IsRefreshing = false; }
     }
 
     [RelayCommand]
     private async Task SearchLogradourosAsync()
     {
-        if (string.IsNullOrWhiteSpace(SearchText) ||
-            SelectedFilterType == "Todos")
+        if (string.IsNullOrWhiteSpace(SearchText) || SelectedFilterType == "Todos")
         {
             await LoadLogradourosAsync();
             return;
         }
-
+        if (IsBusy) return;
         try
         {
             IsBusy = true;
-
-            using var cts = new CancellationTokenSource(
-                TimeSpan.FromSeconds(5));
-
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             IEnumerable<LogradouroDto> resultado = SelectedFilterType switch
             {
-                "CEP" =>
-                    await _logradouroService.ObterPorCepAsync(
-                        SearchText,
-                        cts.Token) is { } porCep
-                        ? [porCep]
-                        : [],
-
-                "Cidade" =>
-                    await _logradouroService.ObterPorCidadeAsync(
-                        SearchText,
-                        cts.Token),
-
-                _ =>
-                    await _logradouroService.ObterTodosAsync(
-                        cts.Token)
+                "CEP" => await _logradouroService.ObterPorCepAsync(SearchText, cts.Token) is { } porCep
+                    ? [porCep] : [],
+                "Cidade" => await _logradouroService.ObterPorCidadeAsync(SearchText, cts.Token),
+                _ => await _logradouroService.ObterTodosAsync(cts.Token)
             };
-
             Logradouros.Clear();
-
-            foreach (var logradouro in resultado)
-            {
-                Logradouros.Add(logradouro);
-            }
+            foreach (var logradouro in resultado) Logradouros.Add(logradouro);
         }
         catch (OperationCanceledException)
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Tempo Esgotado",
-                "A busca expirou.",
-                "OK");
+            await Shell.Current.DisplayAlertAsync("Tempo Esgotado", "A busca expirou.", "OK");
         }
         catch (Exception ex)
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Erro",
-                $"Erro ao buscar logradouros: {ex.Message}",
-                "OK");
+            await Shell.Current.DisplayAlertAsync("Erro",
+                $"Erro ao buscar logradouros: {ex.Message}", "OK");
         }
-        finally
-        {
-            IsBusy = false;
-        }
+        finally { IsBusy = false; }
     }
 
     [RelayCommand]
-    private async Task AddLogradouroAsync()
-    {
-        await Shell.Current.GoToAsync("logradouro");
-    }
+    private async Task AddLogradouroAsync() => await Shell.Current.GoToAsync("logradouro");
 
     [RelayCommand]
     private async Task EditLogradouroAsync(LogradouroDto logradouro)
     {
-        if (logradouro == null)
-            return;
-
-        await Shell.Current.GoToAsync(
-            $"logradouro?Id={logradouro.Id}");
+        if (logradouro == null) return;
+        await Shell.Current.GoToAsync($"logradouro?Id={logradouro.Id}");
     }
 
     [RelayCommand]
     private async Task DeleteLogradouroAsync(LogradouroDto logradouro)
     {
-        if (logradouro == null)
-            return;
-
+        if (logradouro == null || IsBusy) return;
         bool confirmar = await Shell.Current.DisplayAlertAsync(
-            "Confirmar exclusão",
-            $"Deseja excluir o logradouro '{logradouro.Nome}'?",
-            "Sim",
-            "Não");
-
-        if (!confirmar)
-            return;
+            "Confirmar exclusão", $"Deseja excluir o logradouro '{logradouro.Nome}'?", "Sim", "Não");
+        if (!confirmar || IsBusy) return;
 
         try
         {
             IsBusy = true;
-
-            using var cts = new CancellationTokenSource(
-                TimeSpan.FromSeconds(5));
-
-            await _logradouroService.RemoverAsync(
-                logradouro.Id,
-                cts.Token);
-
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+            bool removido = await _logradouroService.RemoverAsync(logradouro.Id, cts.Token);
+            if (!removido)
+            {
+                // Diferencia o registro inexistente do bloqueio por vínculo.
+                var existente = await _logradouroService.ObterPorIdAsync(
+                    logradouro.Id, cts.Token);
+                if (existente != null)
+                {
+                    await Shell.Current.DisplayAlertAsync("Exclusão não permitida",
+                        "Não é possível excluir este logradouro porque existem alunos " +
+                        "vinculados a ele. Atualize o endereço desses alunos antes de excluí-lo.",
+                        "OK");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlertAsync("Logradouro não encontrado",
+                        "Este logradouro não existe mais no cadastro. Atualize a listagem.", "OK");
+                }
+                return;
+            }
             Logradouros.Remove(logradouro);
-
-            await Shell.Current.DisplayAlertAsync(
-                "Sucesso",
-                "Logradouro excluído com sucesso!",
-                "OK");
+            await Shell.Current.DisplayAlertAsync("Sucesso",
+                "Logradouro excluído com sucesso!", "OK");
         }
         catch (OperationCanceledException)
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Tempo Esgotado",
-                "A exclusão expirou.",
-                "OK");
+            await Shell.Current.DisplayAlertAsync("Tempo esgotado",
+                "A operação de exclusão demorou mais que o esperado.", "OK");
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Erro",
-                $"Erro ao excluir logradouro: {ex.Message}",
-                "OK");
+            await Shell.Current.DisplayAlertAsync("Exclusão não permitida", ex.Message, "OK");
         }
-        finally
+        catch (Exception)
         {
-            IsBusy = false;
+            await Shell.Current.DisplayAlertAsync("Erro ao excluir",
+                "Não foi possível excluir o logradouro. Tente novamente ou entre em contato com o suporte.", "OK");
         }
+        finally { IsBusy = false; }
     }
 }

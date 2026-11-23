@@ -1,108 +1,389 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ColaboradorPage"
-    Title="Cadastro de Colaborador">
+    Title="Cadastro de Colaborador"
+    BackgroundColor="#F5F3EC">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="12">
 
-            <Label Text="Dados pessoais"
-                   FontSize="22"
-                   FontAttributes="Bold" />
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="16">
 
-            <Entry Placeholder="Nome completo"
-                   Text="{Binding Colaborador.Nome}" />
+            <!-- CABECALHO -->
 
-            <Entry Placeholder="CPF"
-                   Keyboard="Numeric"
-                   Text="{Binding Colaborador.Cpf}" />
+            <Border
+                BackgroundColor="#071A47"
+                Stroke="#0B2A6F"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <Label Text="Data de nascimento" />
-            <DatePicker
-                Date="{Binding DataNascimentoDateTime, Mode=TwoWay}"
-                Format="dd/MM/yyyy" />
+                <VerticalStackLayout Spacing="6">
 
-            <Entry Placeholder="Telefone"
-                   Keyboard="Telephone"
-                   Text="{Binding Colaborador.Telefone}" />
+                    <Label
+                        Text="COLABORADOR"
+                        FontFamily="Graduate"
+                        FontSize="27"
+                        TextColor="White" />
 
-            <Entry Placeholder="E-mail"
-                   Keyboard="Email"
-                   Text="{Binding Colaborador.Email}" />
+                    <Label
+                        Text="CADASTRO E EDICAO DE COLABORADORES"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="2"
+                        TextColor="White" />
 
+                </VerticalStackLayout>
 
-            <Label
-    Text="Endereço"
-    FontSize="22"
-    FontAttributes="Bold"
-    Margin="0,12,0,0" />
+            </Border>
 
-            <Entry
-    Placeholder="CEP cadastrado em Logradouros"
-    Keyboard="Numeric"
-    Text="{Binding Colaborador.Endereco.Cep}" />
+            <!-- DADOS PESSOAIS -->
 
-            <Entry
-    Placeholder="Número"
-    Keyboard="Numeric"
-    Text="{Binding Colaborador.Numero}" />
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <Entry
-    Placeholder="Complemento (opcional)"
-    Text="{Binding Colaborador.Complemento}" />
+                <VerticalStackLayout Spacing="12">
 
+                    <Label
+                        Text="DADOS PESSOAIS"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
 
-            <Label Text="Dados profissionais"
-                   FontSize="22"
-                   FontAttributes="Bold"
-                   Margin="0,12,0,0" />
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
 
-            <Label Text="Data de admissão" />
-            <DatePicker
-                Date="{Binding DataAdmissaoDateTime, Mode=TwoWay}"
-                Format="dd/MM/yyyy" />
+                    <!-- NOME -->
 
-            <Label Text="Tipo de colaborador" />
-            <Picker
-                Title="Selecione o tipo"
-                ItemsSource="{Binding ColaboradorTipos}"
-                SelectedItem="{Binding Colaborador.Tipo}" />
+                    <Label
+                        Text="NOME COMPLETO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
 
-            <Label Text="Vínculo" />
-            <Picker
-                Title="Selecione o vínculo"
-                ItemsSource="{Binding ColaboradorVinculos}"
-                SelectedItem="{Binding Colaborador.Vinculo}" />
+                    <Entry
+                        Placeholder="Nome completo"
+                        Text="{Binding Colaborador.Nome}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
 
-            <Entry Placeholder="Senha"
-                   IsPassword="True"
-                   Text="{Binding Colaborador.Senha}" />
+                    <!-- CPF -->
 
-            <Entry Placeholder="Confirmar senha"
-                   IsPassword="True"
-                   Text="{Binding ConfirmarSenha}" />
+                    <Label
+                        Text="CPF"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
 
-            <Grid ColumnDefinitions="*,*"
-                  ColumnSpacing="10"
-                  Margin="0,15,0,0">
+                    <Entry
+                        Placeholder="CPF"
+                        Keyboard="Numeric"
+                        Text="{Binding Colaborador.Cpf}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
 
-                <Button
-                    Grid.Column="0"
-                    Text="Cancelar"
-                    Command="{Binding CancelCommand}" />
+                    <!-- NASCIMENTO -->
 
-                <Button
-                    Grid.Column="1"
-                    Text="Salvar"
-                    Command="{Binding SaveColaboradorCommand}" />
-            </Grid>
+                    <Label
+                        Text="DATA DE NASCIMENTO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <DatePicker
+                        Date="{Binding DataNascimentoDateTime, Mode=TwoWay}"
+                        Format="dd/MM/yyyy"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47" />
+
+                    <!-- TELEFONE -->
+
+                    <Label
+                        Text="TELEFONE"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Placeholder="Telefone"
+                        Keyboard="Telephone"
+                        Text="{Binding Colaborador.Telefone}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <!-- EMAIL -->
+
+                    <Label
+                        Text="E-MAIL"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Placeholder="E-mail"
+                        Keyboard="Email"
+                        Text="{Binding Colaborador.Email}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- ENDERECO -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="ENDEREÇO"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <!-- CEP -->
+
+                    <Label
+                        Text="CEP"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Placeholder="CEP cadastrado em Logradouros"
+                        Keyboard="Numeric"
+                        Text="{Binding Colaborador.Endereco.Cep}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <!-- NUMERO -->
+
+                    <Label
+                        Text="NÚMERO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Placeholder="Número"
+                        Keyboard="Numeric"
+                        Text="{Binding Colaborador.Numero}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <!-- COMPLEMENTO -->
+
+                    <Label
+                        Text="COMPLEMENTO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Placeholder="Complemento (opcional)"
+                        Text="{Binding Colaborador.Complemento}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- DADOS PROFISSIONAIS -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="DADOS PROFISSIONAIS"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <!-- ADMISSAO -->
+
+                    <Label
+                        Text="DATA DE ADMISSÃO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <DatePicker
+                        Date="{Binding DataAdmissaoDateTime, Mode=TwoWay}"
+                        Format="dd/MM/yyyy"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47" />
+
+                    <!-- TIPO -->
+
+                    <Label
+                        Text="TIPO DE COLABORADOR"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Picker
+                        Title="Selecione o tipo"
+                        ItemsSource="{Binding ColaboradorTipos}"
+                        SelectedItem="{Binding Colaborador.Tipo}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        TitleColor="#5A6478" />
+
+                    <!-- VINCULO -->
+
+                    <Label
+                        Text="VÍNCULO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Picker
+                        Title="Selecione o vínculo"
+                        ItemsSource="{Binding ColaboradorVinculos}"
+                        SelectedItem="{Binding Colaborador.Vinculo}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        TitleColor="#5A6478" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- SEGURANCA -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="SEGURANÇA"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <!-- SENHA -->
+
+                    <Label
+                        Text="SENHA"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Placeholder="Senha"
+                        IsPassword="True"
+                        Text="{Binding Colaborador.Senha}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <!-- CONFIRMAR SENHA -->
+
+                    <Label
+                        Text="CONFIRMAR SENHA"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Placeholder="Confirmar senha"
+                        IsPassword="True"
+                        Text="{Binding ConfirmarSenha}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- BOTOES -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="16">
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="12">
+
+                    <Button
+                        Grid.Column="0"
+                        Text="CANCELAR"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource OldSchoolSecondaryButton}"
+                        HeightRequest="48" />
+
+                    <Button
+                        Grid.Column="1"
+                        Text="SALVAR COLABORADOR"
+                        Command="{Binding SaveColaboradorCommand}"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        HeightRequest="48" />
+
+                </Grid>
+
+            </Border>
+
+            <!-- CARREGAMENTO -->
 
             <ActivityIndicator
                 IsVisible="{Binding IsBusy}"
-                IsRunning="{Binding IsBusy}" />
+                IsRunning="{Binding IsBusy}"
+                Color="#0B2A6F"
+                HorizontalOptions="Center" />
 
         </VerticalStackLayout>
+
     </ScrollView>
+
 </ContentPage>

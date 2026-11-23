@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
     x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ColaboradorListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -6,102 +7,267 @@
     xmlns:dtos="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application"
     xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
     x:DataType="vm:ColaboradorListViewModel"
-    Title="Colaboradores">
+    Title="Colaboradores"
+    BackgroundColor="#F5F3EC">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="12">
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,Auto,Auto,*"
+        RowSpacing="16">
 
-            <Button
-                Text="+ Novo colaborador"
-                Command="{Binding AddColaboradorCommand}" />
+        <!-- CABECALHO -->
 
-            <Picker
-                Title="Filtrar por"
-                TitleColor="{AppThemeBinding Light=#666666, Dark=#CCCCCC}"
-                TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
-                ItemsSource="{Binding FilterTypes}"
-                SelectedItem="{Binding SelectedFilterType}" />
+        <Border
+            Grid.Row="0"
+            BackgroundColor="#071A47"
+            Stroke="#0B2A6F"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 8"
+            Padding="18">
 
-            <Entry
-                Placeholder="Digite sua pesquisa"
-                Text="{Binding SearchText}"
-                TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
-                PlaceholderColor="{AppThemeBinding Light=#666666, Dark=#CCCCCC}" />
+            <Grid
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="12">
 
-            <Button
-                Text="Pesquisar"
-                Command="{Binding SearchColaboradoresCommand}" />
+                <VerticalStackLayout
+                    Grid.Column="0"
+                    Spacing="5"
+                    VerticalOptions="Center">
 
-            <ActivityIndicator
-                IsRunning="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}"
-                HorizontalOptions="Center" />
+                    <Label
+                        Text="COLABORADORES"
+                        FontFamily="Graduate"
+                        FontSize="27"
+                        TextColor="White" />
 
-            <CollectionView
-                ItemsSource="{Binding Colaboradores}"
-                SelectionMode="None">
+                    <Label
+                        Text="GERENCIAMENTO DE COLABORADORES"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="2"
+                        TextColor="White" />
 
-                <CollectionView.EmptyView>
+                </VerticalStackLayout>
+
+                <Button
+                    Grid.Column="1"
+                    Text="+ NOVO COLABORADOR"
+                    Command="{Binding AddColaboradorCommand}"
+                    BackgroundColor="White"
+                    TextColor="#0B2A6F"
+                    FontFamily="Oswald"
+                    FontSize="15"
+                    CornerRadius="6"
+                    Padding="18,10"
+                    VerticalOptions="Center" />
+
+            </Grid>
+        </Border>
+
+        <!-- FILTROS E PESQUISA -->
+
+        <Border
+            Grid.Row="1"
+            BackgroundColor="White"
+            Stroke="#0B2A6F"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            Padding="16">
+
+            <VerticalStackLayout Spacing="10">
+
+                <Label
+                    Text="PESQUISAR COLABORADORES"
+                    FontFamily="Oswald"
+                    FontSize="17"
+                    TextColor="#0B2A6F" />
+
+                <Grid
+                    ColumnDefinitions="180,*,130"
+                    ColumnSpacing="10">
+
+                    <Picker
+                        Grid.Column="0"
+                        Title="Filtrar por"
+                        TitleColor="#5A6478"
+                        TextColor="#071A47"
+                        ItemsSource="{Binding FilterTypes}"
+                        SelectedItem="{Binding SelectedFilterType}"
+                        BackgroundColor="#F5F3EC" />
+
+                    <Entry
+                        Grid.Column="1"
+                        Placeholder="Digite sua pesquisa"
+                        Text="{Binding SearchText}"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478"
+                        BackgroundColor="#F5F3EC" />
+
+                    <Button
+                        Grid.Column="2"
+                        Text="PESQUISAR"
+                        Command="{Binding SearchColaboradoresCommand}"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        HeightRequest="48"
+                        VerticalOptions="Center" />
+
+                </Grid>
+
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- CARREGAMENTO -->
+
+        <ActivityIndicator
+            Grid.Row="2"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            Color="#0B2A6F"
+            HorizontalOptions="Center" />
+
+        <!-- LISTA DE COLABORADORES -->
+
+        <CollectionView
+            Grid.Row="3"
+            ItemsSource="{Binding Colaboradores}"
+            SelectionMode="None"
+            VerticalOptions="FillAndExpand">
+
+            <CollectionView.EmptyView>
+
+                <VerticalStackLayout
+                    Padding="30"
+                    Spacing="8"
+                    HorizontalOptions="Center">
+
                     <Label
                         Text="Nenhum colaborador encontrado."
-                        TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
-                        HorizontalOptions="Center"
-                        Margin="10" />
-                </CollectionView.EmptyView>
+                        FontFamily="Oswald"
+                        FontSize="18"
+                        TextColor="#5A6478"
+                        HorizontalTextAlignment="Center" />
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dtos:ColaboradorDto">
+                </VerticalStackLayout>
 
-                        <Border
-                            Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"
-                            StrokeThickness="1"
-                            Padding="12"
-                            Margin="0,4">
+            </CollectionView.EmptyView>
 
-                            <VerticalStackLayout Spacing="5">
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="dtos:ColaboradorDto">
+
+                    <Border
+                        Stroke="#0B2A6F"
+                        StrokeThickness="1"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="16"
+                        Margin="0,0,0,12">
+
+                        <!--
+                            COLUNA 0: DADOS
+                            COLUNA 1: ACOES
+                        -->
+
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="16">
+
+                            <!-- DADOS DO COLABORADOR -->
+
+                            <VerticalStackLayout
+                                Grid.Column="0"
+                                Spacing="7"
+                                VerticalOptions="Center">
+
+                                <!-- NOME -->
 
                                 <Label
                                     Text="{Binding Nome}"
-                                    FontAttributes="Bold"
-                                    FontSize="18"
-                                    TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
+                                    FontFamily="Oswald"
+                                    FontSize="21"
+                                    TextColor="#0B2A6F"
+                                    LineBreakMode="WordWrap" />
+
+                                <!-- CODIGO -->
+
+                                <Label
+                                    Text="{Binding Id, StringFormat='CÓDIGO DO COLABORADOR: {0}'}"
+                                    FontFamily="Oswald"
+                                    FontSize="12"
+                                    TextColor="#0B2A6F" />
+
+                                <!-- CPF -->
 
                                 <Label
                                     Text="{Binding Cpf, StringFormat='CPF: {0}'}"
-                                    TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
+                                    FontFamily="Roboto"
+                                    FontSize="14"
+                                    TextColor="#5A6478" />
+
+                                <!-- EMAIL -->
 
                                 <Label
                                     Text="{Binding Email, StringFormat='E-mail: {0}'}"
-                                    TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
+                                    FontFamily="Roboto"
+                                    FontSize="14"
+                                    TextColor="#5A6478"
+                                    LineBreakMode="TailTruncation" />
+
+                                <!-- TIPO -->
 
                                 <Label
-                                    Text="{Binding Tipo, StringFormat='Tipo: {0}'}"
-                                    TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
+                                    Text="{Binding Tipo, StringFormat='TIPO: {0}'}"
+                                    FontFamily="Roboto"
+                                    FontSize="14"
+                                    TextColor="#5A6478" />
+
+                                <!-- VINCULO -->
 
                                 <Label
-                                    Text="{Binding Vinculo, StringFormat='Vínculo: {0}'}"
-                                    TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
-
-                                <Button
-                                    Text="Editar"
-                                    Clicked="OnEditButtonClicked" />
-
-                                <Button
-                                    Text="Excluir"
-                                    BackgroundColor="#0B2A56"
-                                    TextColor="White"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteColaboradorCommand}"
-                                    CommandParameter="{Binding .}" />
+                                    Text="{Binding Vinculo, StringFormat='VÍNCULO: {0}'}"
+                                    FontFamily="Roboto"
+                                    FontSize="14"
+                                    TextColor="#5A6478" />
 
                             </VerticalStackLayout>
-                        </Border>
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                            <!-- ACOES -->
 
-            </CollectionView>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="8"
+                                WidthRequest="115"
+                                VerticalOptions="Center">
 
-        </VerticalStackLayout>
-    </ScrollView>
+                                <!-- EDITAR -->
+
+                                <Button
+                                    Text="EDITAR"
+                                    Clicked="OnEditButtonClicked"
+                                    Style="{StaticResource OldSchoolSecondaryButton}"
+                                    HeightRequest="42" />
+
+                                <!-- EXCLUIR -->
+
+                                <Button
+                                    Text="EXCLUIR"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteColaboradorCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource OldSchoolDangerButton}"
+                                    HeightRequest="42" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
 
 </ContentPage>

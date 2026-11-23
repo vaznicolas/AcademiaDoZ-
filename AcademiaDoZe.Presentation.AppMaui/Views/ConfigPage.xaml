@@ -1,73 +1,248 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
-    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ConfigPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Configurações">
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ConfigPage"
+    Title="Configurações"
+    BackgroundColor="#F5F3EC">
 
     <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="20">
+
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="18"
+            MaximumWidthRequest="1100"
+            HorizontalOptions="Fill">
+
+            <!-- CABEÇALHO -->
+
+            <Border
+                BackgroundColor="#071A47"
+                Stroke="#0B2A6F"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 8"
+                Padding="22">
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label
+                        Text="CONFIGURAÇÕES"
+                        FontFamily="Graduate"
+                        FontSize="27"
+                        TextColor="White" />
+
+                    <Label
+                        Text="PERSONALIZAÇÃO E CONEXÃO DO SISTEMA"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="1.5"
+                        TextColor="#E4EAF5" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- APARÊNCIA -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="22">
+
+                <VerticalStackLayout Spacing="15">
+
+                    <Label
+                        Text="APARÊNCIA DO SISTEMA"
+                        FontFamily="Oswald"
+                        FontSize="22"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <Label
+                        Text="Escolha o tema utilizado pela aplicação."
+                        FontFamily="Roboto"
+                        FontSize="14"
+                        TextColor="#596579" />
+
+                    <Label
+                        Text="TEMA DA APLICAÇÃO"
+                        FontFamily="Oswald"
+                        FontSize="15"
+                        TextColor="#071A47" />
+
+                    <Picker
+                        x:Name="TemaPicker"
+                        Title="Selecione o tema"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        HeightRequest="50">
+
+                        <Picker.Items>
+                            <x:String>Sistema</x:String>
+                            <x:String>Claro</x:String>
+                            <x:String>Escuro</x:String>
+                        </Picker.Items>
+
+                    </Picker>
+
+                    <Button
+                        Text="SALVAR TEMA"
+                        Clicked="OnSalvarTemaClicked"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        HeightRequest="50"
+                        HorizontalOptions="Fill" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- CONEXÃO COM BANCO DE DADOS -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="22">
+
+                <VerticalStackLayout Spacing="15">
+
+                    <Label
+                        Text="BANCO DE DADOS"
+                        FontFamily="Oswald"
+                        FontSize="22"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <Label
+                        Text="CONFIGURAÇÃO SQL SERVER"
+                        FontFamily="Oswald"
+                        FontSize="16"
+                        TextColor="#071A47" />
+
+                    <Label
+                        Text="Configure os dados utilizados para estabelecer a conexão com o banco de dados da academia."
+                        FontFamily="Roboto"
+                        FontSize="13"
+                        TextColor="#596579" />
+
+                    <!-- SERVIDOR -->
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Label
+                            Text="SERVIDOR"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
+
+                        <Entry
+                            x:Name="ServidorEntry"
+                            Placeholder="Ex.: localhost,1433"
+                            BackgroundColor="#F5F3EC"
+                            TextColor="#071A47"
+                            PlaceholderColor="#667085"
+                            HeightRequest="48"
+                            ClearButtonVisibility="WhileEditing" />
+
+                    </VerticalStackLayout>
+
+                    <!-- NOME DO BANCO -->
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Label
+                            Text="NOME DO BANCO DE DADOS"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
+
+                        <Entry
+                            x:Name="BancoEntry"
+                            Placeholder="Ex.: db_academia_do_ze"
+                            BackgroundColor="#F5F3EC"
+                            TextColor="#071A47"
+                            PlaceholderColor="#667085"
+                            HeightRequest="48"
+                            ClearButtonVisibility="WhileEditing" />
+
+                    </VerticalStackLayout>
+
+                    <!-- USUÁRIO -->
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Label
+                            Text="USUÁRIO SQL SERVER"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
+
+                        <Entry
+                            x:Name="UsuarioEntry"
+                            Placeholder="Usuário do banco de dados"
+                            BackgroundColor="#F5F3EC"
+                            TextColor="#071A47"
+                            PlaceholderColor="#667085"
+                            HeightRequest="48"
+                            ClearButtonVisibility="WhileEditing" />
+
+                    </VerticalStackLayout>
+
+                    <!-- SENHA -->
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Label
+                            Text="SENHA"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
+
+                        <Entry
+                            x:Name="SenhaEntry"
+                            Placeholder="Senha do SQL Server"
+                            IsPassword="True"
+                            BackgroundColor="#F5F3EC"
+                            TextColor="#071A47"
+                            PlaceholderColor="#667085"
+                            HeightRequest="48" />
+
+                    </VerticalStackLayout>
+
+                    <Button
+                        Text="SALVAR CREDENCIAIS"
+                        Clicked="OnSalvarBancoClicked"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        HeightRequest="52"
+                        HorizontalOptions="Fill" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- RODAPÉ -->
 
             <Label
-                Text="Configurações da aplicação"
-                FontSize="26"
-                FontAttributes="Bold" />
-
-            <Label
-                Text="Aparência"
-                FontSize="20"
-                FontAttributes="Bold" />
-
-            <Label Text="Tema da aplicação" />
-
-            <Picker
-                x:Name="TemaPicker"
-                Title="Selecione o tema">
-                <Picker.Items>
-                    <x:String>Sistema</x:String>
-                    <x:String>Claro</x:String>
-                    <x:String>Escuro</x:String>
-                </Picker.Items>
-            </Picker>
-
-            <Button Text="🎨  Salvar tema"
-        Clicked="OnSalvarTemaClicked"
-        CornerRadius="10"
-        HeightRequest="48" />
-
-            <Button Text="🗄️  Salvar credenciais"
-        Clicked="OnSalvarBancoClicked"
-        CornerRadius="10"
-        HeightRequest="48" />
-
-            <BoxView HeightRequest="1" Opacity="0.3" />
-
-            <Label
-                Text="Banco de dados SQL Server"
-                FontSize="20"
-                FontAttributes="Bold" />
-
-            <Label Text="Servidor" />
-            <Entry
-                x:Name="ServidorEntry"
-                Placeholder="Ex.: localhost,1433" />
-
-            <Label Text="Banco de dados" />
-            <Entry
-                x:Name="BancoEntry"
-                Placeholder="Nome do banco" />
-
-            <Label Text="Usuário" />
-            <Entry
-                x:Name="UsuarioEntry"
-                Placeholder="Usuário do SQL Server" />
-
-            <Label Text="Senha" />
-            <Entry
-                x:Name="SenhaEntry"
-                Placeholder="Senha do SQL Server"
-                IsPassword="True" />
+                Text="ACADEMIA DO ZÉ  •  CONFIGURAÇÕES DO SISTEMA"
+                FontFamily="Oswald"
+                FontSize="12"
+                CharacterSpacing="1"
+                TextColor="#596579"
+                HorizontalTextAlignment="Center"
+                Margin="0,8,0,12" />
 
         </VerticalStackLayout>
+
     </ScrollView>
+
 </ContentPage>

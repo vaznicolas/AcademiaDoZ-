@@ -132,6 +132,29 @@ public partial class MatriculaViewModel : BaseViewModel
 
     public bool LaudoOpcional => !ExigeLaudo && !HasLaudo;
 
+
+    public ImageSource? LaudoImagem
+    {
+        get
+        {
+            var conteudo = Matricula?.LaudoMedico?.Conteudo;
+
+            if (conteudo == null || conteudo.Length == 0)
+                return null;
+
+            return ImageSource.FromStream(
+                () => new MemoryStream(conteudo));
+        }
+    }
+
+    public string LaudoStatus =>
+        HasLaudo
+            ? "Laudo médico anexado com sucesso."
+            : ExigeLaudo
+                ? "Laudo médico obrigatório e ainda não anexado."
+                : "Nenhum laudo médico anexado.";
+
+
     public MatriculaViewModel(
         IMatriculaService matriculaService,
         IAlunoService alunoService)
@@ -239,6 +262,7 @@ public partial class MatriculaViewModel : BaseViewModel
         }
     }
 
+
     public void NotificarPropriedadesVisuais()
     {
         OnPropertyChanged(nameof(HasAlunoVinculado));
@@ -249,7 +273,12 @@ public partial class MatriculaViewModel : BaseViewModel
         OnPropertyChanged(nameof(HasLaudo));
         OnPropertyChanged(nameof(LaudoPendente));
         OnPropertyChanged(nameof(LaudoOpcional));
+
+        // Atualiza a visualização do laudo
+        OnPropertyChanged(nameof(LaudoImagem));
+        OnPropertyChanged(nameof(LaudoStatus));
     }
+
 
     #region Restrições médicas - Enum Flags
 

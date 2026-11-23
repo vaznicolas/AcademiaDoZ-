@@ -4,67 +4,237 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ControleAcessoPage"
-    Title="Controle de Acesso">
+    Title="Controle de Acesso"
+    BackgroundColor="#F5F3EC">
 
     <ScrollView>
+
         <VerticalStackLayout
-            Padding="24"
-            Spacing="18">
+            Padding="20"
+            Spacing="16">
 
-            <Label
-                Text="Controle de Acesso"
-                FontSize="28"
-                FontAttributes="Bold" />
+            <!-- CABECALHO -->
 
-            <Label
-                Text="Catraca - Academia do Zé"
-                FontSize="16"
-                TextColor="Gray" />
+            <Border
+                BackgroundColor="#071A47"
+                Stroke="#0B2A6F"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <Frame Padding="20">
-                <VerticalStackLayout Spacing="15">
+                <VerticalStackLayout Spacing="6">
 
                     <Label
-                        Text="Tipo de pessoa"
-                        FontAttributes="Bold" />
+                        Text="CONTROLE DE ACESSO"
+                        FontFamily="Graduate"
+                        FontSize="27"
+                        TextColor="White" />
+
+                    <Label
+                        Text="CATRACA - ACADEMIA DO ZÉ"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="2"
+                        TextColor="White" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- REGISTRO DE ACESSO -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="16">
+
+                    <Label
+                        Text="REGISTRAR ACESSO"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <Label
+                        Text="Selecione o tipo de pessoa e o cadastro correspondente para registrar uma entrada ou saída."
+                        FontFamily="Roboto"
+                        FontSize="13"
+                        TextColor="#5A6478" />
+
+                    <!-- TIPO DE PESSOA -->
+
+                    <Label
+                        Text="TIPO DE PESSOA"
+                        FontFamily="Oswald"
+                        FontSize="15"
+                        TextColor="#071A47" />
 
                     <Picker
                         x:Name="TipoPessoaPicker"
                         Title="Selecione"
-                        SelectedIndexChanged="TipoPessoaPicker_SelectedIndexChanged">
+                        SelectedIndexChanged="TipoPessoaPicker_SelectedIndexChanged"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        TitleColor="#5A6478">
+
                         <Picker.Items>
+
                             <x:String>Aluno</x:String>
+
                             <x:String>Colaborador</x:String>
+
                         </Picker.Items>
+
                     </Picker>
 
+                    <!-- PESSOA -->
+
                     <Label
-                        Text="Pessoa"
-                        FontAttributes="Bold" />
+                        Text="PESSOA"
+                        FontFamily="Oswald"
+                        FontSize="15"
+                        TextColor="#071A47" />
 
                     <Picker
                         x:Name="PessoaPicker"
                         Title="Selecione uma pessoa"
-                        ItemDisplayBinding="{Binding Nome}" />
+                        ItemDisplayBinding="{Binding Nome}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        TitleColor="#5A6478" />
 
-                    <Button
-                        Text="Registrar Entrada"
-                        Clicked="RegistrarEntrada_Clicked" />
+                    <!-- BOTOES DE ACESSO -->
 
-                    <Button
-                        Text="Registrar Saída"
-                        Clicked="RegistrarSaida_Clicked" />
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12"
+                        Margin="0,10,0,0">
+
+                        <Button
+                            Grid.Column="0"
+                            Text="REGISTRAR ENTRADA"
+                            Clicked="RegistrarEntrada_Clicked"
+                            BackgroundColor="#2E7D32"
+                            TextColor="White"
+                            FontFamily="Oswald"
+                            FontSize="16"
+                            CornerRadius="6"
+                            HeightRequest="52" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="REGISTRAR SAÍDA"
+                            Clicked="RegistrarSaida_Clicked"
+                            BackgroundColor="#B3261E"
+                            TextColor="White"
+                            FontFamily="Oswald"
+                            FontSize="16"
+                            CornerRadius="6"
+                            HeightRequest="52" />
+
+                    </Grid>
+
+                    <!-- MENSAGEM DO REGISTRO -->
 
                     <Label
                         x:Name="MensagemLabel"
-                        FontSize="16"
+                        FontFamily="Roboto"
+                        FontSize="15"
                         FontAttributes="Bold"
-                        LineBreakMode="WordWrap" />
+                        LineBreakMode="WordWrap"
+                        TextColor="#0B2A6F" />
 
                 </VerticalStackLayout>
-            </Frame>
+
+            </Border>
+
+            <!-- HISTORICO DE ACESSOS -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="16">
+
+                    <!-- TITULO E ATUALIZACAO -->
+
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="12">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="4"
+                            VerticalOptions="Center">
+
+                            <Label
+                                Text="ACESSOS REGISTRADOS HOJE"
+                                FontFamily="Oswald"
+                                FontSize="21"
+                                TextColor="#0B2A6F" />
+
+                            <Label
+                                Text="HISTÓRICO DE ENTRADAS E SAÍDAS"
+                                FontFamily="Roboto"
+                                FontSize="12"
+                                TextColor="#5A6478" />
+
+                        </VerticalStackLayout>
+
+                        <Button
+                            Grid.Column="1"
+                            Text="ATUALIZAR"
+                            Clicked="AtualizarAcessos_Clicked"
+                            Style="{StaticResource OldSchoolSecondaryButton}"
+                            HeightRequest="44"
+                            VerticalOptions="Center" />
+
+                    </Grid>
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <!-- CARREGAMENTO -->
+
+                    <ActivityIndicator
+                        x:Name="CarregandoAcessos"
+                        IsRunning="False"
+                        IsVisible="False"
+                        Color="#0B2A6F"
+                        HorizontalOptions="Center" />
+
+                    <!-- MENSAGEM DO HISTORICO -->
+
+                    <Label
+                        x:Name="HistoricoMensagemLabel"
+                        Text="Nenhum acesso registrado hoje."
+                        FontFamily="Roboto"
+                        FontSize="14"
+                        TextColor="#5A6478" />
+
+                    <!-- LISTA GERADA PELO C# -->
+
+                    <VerticalStackLayout
+                        x:Name="ListaAcessosLayout"
+                        Spacing="10" />
+
+                </VerticalStackLayout>
+
+            </Border>
 
         </VerticalStackLayout>
+
     </ScrollView>
 
 </ContentPage>

@@ -17,13 +17,12 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
-                fonts.AddFont(
-                    "OpenSans-Regular.ttf",
-                    "OpenSansRegular");
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 
-                fonts.AddFont(
-                    "OpenSans-Semibold.ttf",
-                    "OpenSansSemibold");
+                fonts.AddFont("Graduate-Regular.ttf", "Graduate");
+                fonts.AddFont("Oswald-Regular.ttf", "Oswald");
+                fonts.AddFont("Roboto-Regular.ttf", "Roboto");
             });
 
         // Configuração do banco e serviços da aplicação

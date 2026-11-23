@@ -1,177 +1,559 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
-             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaPage"
-             Title="Cadastro de Matrícula">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaPage"
+    Title="Cadastro de Matrícula"
+    BackgroundColor="#F5F3EC">
+
+    <!-- CONVERSORES EXISTENTES -->
 
     <ContentPage.Resources>
         <ResourceDictionary>
+
             <converters:FotoToImageSourceConverter
                 x:Key="FotoToImageSourceConverter" />
 
             <converters:EnumDisplayConverter
                 x:Key="EnumDisplayConverter" />
+
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="12">
 
-            <Label Text="Cadastro de Matrícula"
-                   FontSize="24"
-                   FontAttributes="Bold" />
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="16">
 
-            <!-- Busca de aluno -->
-            <Label Text="Selecionar aluno"
-                   FontAttributes="Bold" />
+            <!-- CABECALHO -->
 
-            <SearchBar Placeholder="Digite o nome do aluno"
-                       Text="{Binding BuscaAluno}"
-                       SearchCommand="{Binding BuscarAlunosCommand}" />
+            <Border
+                BackgroundColor="#071A47"
+                Stroke="#0B2A6F"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <CollectionView ItemsSource="{Binding AlunosDisponiveis}"
+                <VerticalStackLayout Spacing="6">
+
+                    <Label
+                        Text="MATRÍCULA"
+                        FontFamily="Graduate"
+                        FontSize="27"
+                        TextColor="White" />
+
+                    <Label
+                        Text="CADASTRO E EDIÇÃO DE MATRÍCULAS"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="2"
+                        TextColor="White" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- SELECIONAR ALUNO -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="SELECIONAR ALUNO"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <Label
+                        Text="PESQUISAR ALUNO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <SearchBar
+                        Placeholder="Digite o nome do aluno"
+                        Text="{Binding BuscaAluno}"
+                        SearchCommand="{Binding BuscarAlunosCommand}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <Label
+                        Text="RESULTADOS DA PESQUISA"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Border
+                        BackgroundColor="#F5F3EC"
+                        Stroke="#D8DCE5"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 6"
+                        Padding="8">
+
+                        <CollectionView
+                            ItemsSource="{Binding AlunosDisponiveis}"
                             SelectionMode="Single"
                             SelectedItem="{Binding AlunoSelecionado, Mode=TwoWay}"
                             HeightRequest="180">
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="8"
-                              ColumnDefinitions="*,Auto">
+                            <CollectionView.ItemTemplate>
 
-                            <Label Grid.Column="0"
-                                   Text="{Binding Nome}"
-                                   VerticalOptions="Center" />
+                                <DataTemplate>
 
-                            <Label Grid.Column="1"
-                                   Text="{Binding Cpf}"
-                                   VerticalOptions="Center"
-                                   FontSize="12" />
+                                    <Grid
+                                        Padding="10"
+                                        ColumnDefinitions="*,Auto"
+                                        ColumnSpacing="12">
 
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                        <Label
+                                            Grid.Column="0"
+                                            Text="{Binding Nome}"
+                                            FontFamily="Oswald"
+                                            FontSize="16"
+                                            TextColor="#0B2A6F"
+                                            VerticalOptions="Center" />
 
-            <!-- Dados do aluno -->
-            <Label Text="Dados do aluno"
-                   FontAttributes="Bold"
-                   FontSize="18" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Text="{Binding Cpf}"
+                                            FontFamily="Roboto"
+                                            FontSize="13"
+                                            TextColor="#5A6478"
+                                            VerticalOptions="Center" />
 
-            <Label Text="{Binding Matricula.AlunoMatricula.Nome,
-                                  StringFormat='Nome: {0}'}" />
+                                    </Grid>
 
-            <Label Text="{Binding Matricula.AlunoMatricula.Cpf,
-                                  StringFormat='CPF: {0}'}" />
+                                </DataTemplate>
 
-            <Label Text="{Binding Matricula.AlunoMatricula.DataNascimento,
-                                  StringFormat='Nascimento: {0:dd/MM/yyyy}'}" />
+                            </CollectionView.ItemTemplate>
 
-            <Image Source="{Binding Matricula.AlunoMatricula.Foto,
-                                     Converter={StaticResource FotoToImageSourceConverter}}"
-                   HeightRequest="120"
-                   WidthRequest="120"
-                   Aspect="AspectFill"
-                   HorizontalOptions="Start" />
+                        </CollectionView>
 
-            <BoxView HeightRequest="1"
-                     Color="Gray" />
+                    </Border>
 
-            <!-- Plano -->
-            <Label Text="Plano"
-                   FontAttributes="Bold" />
+                </VerticalStackLayout>
 
-            <Picker x:Name="PlanoPicker"
-                    Title="Selecione o plano"
-                    ItemsSource="{Binding PlanoTipos}"
-                    SelectedItem="{Binding Matricula.Plano}"
-                    SelectedIndexChanged="OnPlanoChanged" />
+            </Border>
 
-            <!-- Datas -->
-            <Label Text="Data de início"
-                   FontAttributes="Bold" />
+            <!-- DADOS DO ALUNO -->
 
-            <DatePicker x:Name="DataInicioPicker"
-                        DateSelected="OnDataInicioChanged" />
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <Label Text="Data final"
-                   FontAttributes="Bold" />
+                <VerticalStackLayout Spacing="12">
 
-            <DatePicker x:Name="DataFimPicker"
-                        IsEnabled="False" />
+                    <Label
+                        Text="DADOS DO ALUNO"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
 
-            <!-- Objetivo -->
-            <Label Text="Objetivo"
-                   FontAttributes="Bold" />
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
 
-            <Editor Text="{Binding Matricula.Objetivo}"
-                    Placeholder="Descreva o objetivo da matrícula"
-                    AutoSize="TextChanges"
-                    HeightRequest="100" />
+                    <Grid
+                        ColumnDefinitions="*,130"
+                        ColumnSpacing="16">
 
-            <!-- Restrições -->
-            <Label Text="Restrições médicas"
-                   FontAttributes="Bold"
-                   FontSize="18" />
+                        <!-- INFORMACOES -->
 
-            <CollectionView ItemsSource="{Binding RestricoesMulti}"
-                            SelectionMode="None">
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="10"
+                            VerticalOptions="Center">
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <HorizontalStackLayout Padding="5"
-                                               Spacing="10">
+                            <Label
+                                Text="{Binding Matricula.AlunoMatricula.Nome, StringFormat='Nome: {0}'}"
+                                FontFamily="Oswald"
+                                FontSize="18"
+                                TextColor="#0B2A6F" />
 
-                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                            <Label
+                                Text="{Binding Matricula.AlunoMatricula.Cpf, StringFormat='CPF: {0}'}"
+                                FontFamily="Roboto"
+                                FontSize="14"
+                                TextColor="#5A6478" />
 
-                            <Label Text="{Binding Value,
-                                                  Converter={StaticResource EnumDisplayConverter}}"
-                                   VerticalOptions="Center" />
+                            <Label
+                                Text="{Binding Matricula.AlunoMatricula.DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}"
+                                FontFamily="Roboto"
+                                FontSize="14"
+                                TextColor="#5A6478" />
 
-                        </HorizontalStackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                        </VerticalStackLayout>
 
-            <!-- Observações -->
-            <Label Text="Observações"
-                   FontAttributes="Bold" />
+                        <!-- FOTO -->
 
-            <Editor Text="{Binding Matricula.Observacoes}"
-                    Placeholder="Observações adicionais"
-                    AutoSize="TextChanges"
-                    HeightRequest="100" />
+                        <Border
+                            Grid.Column="1"
+                            WidthRequest="120"
+                            HeightRequest="120"
+                            Padding="3"
+                            BackgroundColor="#F5F3EC"
+                            Stroke="#0B2A6F"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 8"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
 
-            <!-- Laudo médico -->
-            <Label Text="Laudo médico"
-                   FontAttributes="Bold"
-                   FontSize="18" />
+                            <Image
+                                Source="{Binding Matricula.AlunoMatricula.Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                                HeightRequest="114"
+                                WidthRequest="114"
+                                Aspect="AspectFill" />
 
-            <Label Text="{Binding LaudoStatus}" />
+                        </Border>
 
-            <Button Text="Selecionar laudo médico"
-                    Command="{Binding SelecionarFotoCommand}" />
+                    </Grid>
 
-            <Button Text="Remover laudo"
-                    Command="{Binding RemoverLaudoCommand}" />
+                </VerticalStackLayout>
 
-            <BoxView HeightRequest="1"
-                     Color="Gray" />
+            </Border>
 
-            <!-- Botões -->
-            <Button Text="Salvar matrícula"
-                    Command="{Binding SaveMatriculaCommand}" />
+            <!-- PLANO E VIGENCIA -->
 
-            <Button Text="Cancelar"
-                    Command="{Binding CancelCommand}"
-                    BackgroundColor="Gray" />
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}"
-                               IsVisible="{Binding IsBusy}" />
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="PLANO E VIGÊNCIA"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <!-- PLANO -->
+
+                    <Label
+                        Text="PLANO DA MATRÍCULA"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Picker
+                        x:Name="PlanoPicker"
+                        Title="Selecione o plano"
+                        ItemsSource="{Binding PlanoTipos}"
+                        SelectedItem="{Binding Matricula.Plano}"
+                        SelectedIndexChanged="OnPlanoChanged"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        TitleColor="#5A6478" />
+
+                    <!-- DATA INICIO -->
+
+                    <Label
+                        Text="DATA DE INÍCIO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <DatePicker
+                        x:Name="DataInicioPicker"
+                        DateSelected="OnDataInicioChanged"
+                        Format="dd/MM/yyyy"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47" />
+
+                    <!-- DATA FINAL -->
+
+                    <Label
+                        Text="DATA FINAL"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <DatePicker
+                        x:Name="DataFimPicker"
+                        IsEnabled="False"
+                        Format="dd/MM/yyyy"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47" />
+
+                    <Label
+                        Text="A data final é calculada automaticamente de acordo com o plano selecionado."
+                        FontFamily="Roboto"
+                        FontSize="12"
+                        TextColor="#5A6478" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- OBJETIVO E RESTRICOES -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="OBJETIVO E RESTRIÇÕES MÉDICAS"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <!-- OBJETIVO -->
+
+                    <Label
+                        Text="OBJETIVO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Editor
+                        Text="{Binding Matricula.Objetivo}"
+                        Placeholder="Descreva o objetivo da matrícula"
+                        AutoSize="TextChanges"
+                        HeightRequest="100"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <!-- RESTRICOES -->
+
+                    <Label
+                        Text="RESTRIÇÕES MÉDICAS"
+                        FontFamily="Oswald"
+                        FontSize="17"
+                        TextColor="#0B2A6F"
+                        Margin="0,8,0,0" />
+
+                    <Label
+                        Text="Marque as restrições médicas aplicáveis ao aluno."
+                        FontFamily="Roboto"
+                        FontSize="13"
+                        TextColor="#5A6478" />
+
+                    <CollectionView
+                        ItemsSource="{Binding RestricoesMulti}"
+                        SelectionMode="None">
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate>
+
+                                <HorizontalStackLayout
+                                    Padding="5"
+                                    Spacing="10">
+
+                                    <CheckBox
+                                        IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                        Color="#0B2A6F" />
+
+                                    <Label
+                                        Text="{Binding Value, Converter={StaticResource EnumDisplayConverter}}"
+                                        FontFamily="Roboto"
+                                        FontSize="14"
+                                        TextColor="#071A47"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- OBSERVACOES E LAUDO -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="OBSERVAÇÕES E LAUDO MÉDICO"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
+
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
+
+                    <!-- OBSERVACOES -->
+
+                    <Label
+                        Text="OBSERVAÇÕES"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#071A47" />
+
+                    <Editor
+                        Text="{Binding Matricula.Observacoes}"
+                        Placeholder="Observações adicionais"
+                        AutoSize="TextChanges"
+                        HeightRequest="100"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <!-- LAUDO MEDICO -->
+
+                    <Label
+                        Text="LAUDO MÉDICO"
+                        FontFamily="Oswald"
+                        FontSize="17"
+                        TextColor="#0B2A6F"
+                        Margin="0,8,0,0" />
+
+
+                    <!-- STATUS DO LAUDO -->
+
+                    <Label
+    Text="{Binding LaudoStatus}"
+    FontFamily="Roboto"
+    FontSize="14"
+    TextColor="#0B2A6F"
+    FontAttributes="Bold" />
+
+                    <!-- VISUALIZACAO DO LAUDO -->
+
+                    <Border
+    BackgroundColor="#F5F3EC"
+    Stroke="#0B2A6F"
+    StrokeThickness="1"
+    StrokeShape="RoundRectangle 8"
+    Padding="12"
+    IsVisible="{Binding HasLaudo}">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+            Text="PRÉ-VISUALIZAÇÃO DO LAUDO"
+            FontFamily="Oswald"
+            FontSize="15"
+            TextColor="#0B2A6F" />
+
+                            <Image
+            Source="{Binding LaudoImagem}"
+            Aspect="AspectFit"
+            HeightRequest="280"
+            HorizontalOptions="Fill" />
+
+                            <Label
+            Text="Imagem do laudo médico anexado."
+            FontFamily="Roboto"
+            FontSize="12"
+            TextColor="#2E7D32"
+            HorizontalTextAlignment="Center" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12">
+
+                        <Button
+                            Grid.Column="0"
+                            Text="SELECIONAR LAUDO MÉDICO"
+                            Command="{Binding SelecionarFotoCommand}"
+                            Style="{StaticResource OldSchoolPrimaryButton}"
+                            HeightRequest="48" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="REMOVER LAUDO"
+                            Command="{Binding RemoverLaudoCommand}"
+                            Style="{StaticResource OldSchoolDangerButton}"
+                            HeightRequest="48" />
+
+                    </Grid>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- ACOES -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="16">
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="12">
+
+                    <Button
+                        Grid.Column="0"
+                        Text="CANCELAR"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource OldSchoolSecondaryButton}"
+                        HeightRequest="48" />
+
+                    <Button
+                        Grid.Column="1"
+                        Text="SALVAR MATRÍCULA"
+                        Command="{Binding SaveMatriculaCommand}"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        HeightRequest="48" />
+
+                </Grid>
+
+            </Border>
+
+            <!-- CARREGAMENTO -->
+
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                Color="#0B2A6F"
+                HorizontalOptions="Center" />
 
         </VerticalStackLayout>
+
     </ScrollView>
 
 </ContentPage>

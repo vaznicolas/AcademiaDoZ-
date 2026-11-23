@@ -1,90 +1,279 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
     x:Class="AcademiaDoZe.Presentation.AppMaui.Views.LogradouroPage"
     x:DataType="vm:LogradouroViewModel"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    BackgroundColor="#F5F3EC">
 
     <ScrollView>
+
         <VerticalStackLayout
             Padding="20"
-            Spacing="15">
+            Spacing="16"
+            MaximumWidthRequest="1100"
+            HorizontalOptions="Fill">
 
-            <Label
-                Text="Dados do Logradouro"
-                FontSize="24"
-                FontAttributes="Bold" />
+            <!-- CABECALHO -->
 
-            <Label Text="CEP" />
+            <Border
+                BackgroundColor="#071A47"
+                Stroke="#0B2A6F"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="6">
 
-                <Entry
-                    Grid.Column="0"
-                    Text="{Binding Logradouro.Cep}"
-                    Placeholder="Digite o CEP"
-                    Keyboard="Numeric" />
+                    <Label
+                        Text="CADASTRO DE LOGRADOURO"
+                        FontFamily="Graduate"
+                        FontSize="26"
+                        TextColor="White"
+                        LineBreakMode="WordWrap" />
 
-                <Button
-                    Grid.Column="1"
-                    Text="Buscar"
-                    Command="{Binding SearchByCepCommand}"
-                    Margin="10,0,0,0" />
+                    <Label
+                        Text="GERENCIAMENTO DE ENDEREÇOS"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="2"
+                        TextColor="White" />
 
-            </Grid>
+                </VerticalStackLayout>
 
-            <Label Text="Nome" />
+            </Border>
 
-            <Entry
-                Text="{Binding Logradouro.Nome}"
-                Placeholder="Nome do logradouro" />
+            <!-- DADOS DO ENDERECO -->
 
-            <Label Text="Bairro" />
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-            <Entry
-                Text="{Binding Logradouro.Bairro}"
-                Placeholder="Bairro" />
+                <VerticalStackLayout Spacing="16">
 
-            <Label Text="Cidade" />
+                    <Label
+                        Text="DADOS DO LOGRADOURO"
+                        FontFamily="Oswald"
+                        FontSize="21"
+                        TextColor="#0B2A6F" />
 
-            <Entry
-                Text="{Binding Logradouro.Cidade}"
-                Placeholder="Cidade" />
+                    <BoxView
+                        HeightRequest="2"
+                        Color="#0B2A6F" />
 
-            <Label Text="Estado" />
+                    <Label
+                        Text="Informe o CEP e utilize a busca para preencher os dados disponíveis do endereço."
+                        FontFamily="Roboto"
+                        FontSize="13"
+                        TextColor="#5A6478" />
 
-            <Entry
-                Text="{Binding Logradouro.Estado}"
-                Placeholder="UF"
-                MaxLength="2" />
+                    <!-- CEP -->
 
-            <Label Text="País" />
+                    <VerticalStackLayout Spacing="7">
 
-            <Entry
-                Text="{Binding Logradouro.Pais}"
-                Placeholder="País" />
+                        <Label
+                            Text="CEP"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
 
-            <HorizontalStackLayout
-                Spacing="10"
-                HorizontalOptions="Center">
+                        <Grid
+                            ColumnDefinitions="*,145"
+                            ColumnSpacing="10">
 
-                <Button
-                    Text="Salvar"
-                    Command="{Binding SaveLogradouroCommand}" />
+                            <Entry
+                                Grid.Column="0"
+                                Text="{Binding Logradouro.Cep}"
+                                Placeholder="Digite o CEP"
+                                Keyboard="Numeric"
+                                MaxLength="9"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47"
+                                PlaceholderColor="#5A6478"
+                                HeightRequest="48"
+                                ClearButtonVisibility="WhileEditing" />
 
-                <Button
-                    Text="Cancelar"
-                    Command="{Binding CancelCommand}" />
+                            <Button
+                                Grid.Column="1"
+                                Text="BUSCAR CEP"
+                                Command="{Binding SearchByCepCommand}"
+                                BackgroundColor="#0B2A6F"
+                                TextColor="White"
+                                FontFamily="Oswald"
+                                FontSize="15"
+                                CornerRadius="6"
+                                HeightRequest="48" />
 
-            </HorizontalStackLayout>
+                        </Grid>
+
+                    </VerticalStackLayout>
+
+                    <!-- NOME DO LOGRADOURO -->
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Label
+                            Text="NOME DO LOGRADOURO"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
+
+                        <Entry
+                            Text="{Binding Logradouro.Nome}"
+                            Placeholder="Ex.: Rua XV de Novembro"
+                            BackgroundColor="#F5F3EC"
+                            TextColor="#071A47"
+                            PlaceholderColor="#5A6478"
+                            HeightRequest="48"
+                            ClearButtonVisibility="WhileEditing" />
+
+                    </VerticalStackLayout>
+
+                    <!-- BAIRRO -->
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Label
+                            Text="BAIRRO"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
+
+                        <Entry
+                            Text="{Binding Logradouro.Bairro}"
+                            Placeholder="Digite o bairro"
+                            BackgroundColor="#F5F3EC"
+                            TextColor="#071A47"
+                            PlaceholderColor="#5A6478"
+                            HeightRequest="48"
+                            ClearButtonVisibility="WhileEditing" />
+
+                    </VerticalStackLayout>
+
+                    <!-- CIDADE E ESTADO -->
+
+                    <Grid
+                        ColumnDefinitions="*,140"
+                        ColumnSpacing="14">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="7">
+
+                            <Label
+                                Text="CIDADE"
+                                FontFamily="Oswald"
+                                FontSize="15"
+                                TextColor="#071A47" />
+
+                            <Entry
+                                Text="{Binding Logradouro.Cidade}"
+                                Placeholder="Digite a cidade"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47"
+                                PlaceholderColor="#5A6478"
+                                HeightRequest="48"
+                                ClearButtonVisibility="WhileEditing" />
+
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="7">
+
+                            <Label
+                                Text="ESTADO (UF)"
+                                FontFamily="Oswald"
+                                FontSize="15"
+                                TextColor="#071A47" />
+
+                            <Entry
+                                Text="{Binding Logradouro.Estado}"
+                                Placeholder="Ex.: SC"
+                                MaxLength="2"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47"
+                                PlaceholderColor="#5A6478"
+                                HeightRequest="48"
+                                HorizontalTextAlignment="Center" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                    <!-- PAIS -->
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Label
+                            Text="PAÍS"
+                            FontFamily="Oswald"
+                            FontSize="15"
+                            TextColor="#071A47" />
+
+                        <Entry
+                            Text="{Binding Logradouro.Pais}"
+                            Placeholder="Ex.: Brasil"
+                            BackgroundColor="#F5F3EC"
+                            TextColor="#071A47"
+                            PlaceholderColor="#5A6478"
+                            HeightRequest="48"
+                            ClearButtonVisibility="WhileEditing" />
+
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- ACOES DO FORMULARIO -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="18">
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="12">
+
+                    <Button
+                        Grid.Column="0"
+                        Text="SALVAR LOGRADOURO"
+                        Command="{Binding SaveLogradouroCommand}"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        HeightRequest="52" />
+
+                    <Button
+                        Grid.Column="1"
+                        Text="CANCELAR"
+                        Command="{Binding CancelCommand}"
+                        Style="{StaticResource OldSchoolSecondaryButton}"
+                        HeightRequest="52" />
+
+                </Grid>
+
+            </Border>
+
+            <!-- CARREGAMENTO -->
 
             <ActivityIndicator
                 IsRunning="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}" />
+                IsVisible="{Binding IsBusy}"
+                Color="#0B2A6F"
+                HorizontalOptions="Center"
+                HeightRequest="40" />
 
         </VerticalStackLayout>
+
     </ScrollView>
 
 </ContentPage>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -6,138 +7,283 @@
     xmlns:dto="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application"
     x:Class="AcademiaDoZe.Presentation.AppMaui.Views.LogradouroListPage"
     x:DataType="vm:LogradouroListViewModel"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    BackgroundColor="#F5F3EC">
 
-    <Grid RowDefinitions="Auto,*">
+    <!-- ESTRUTURA PRINCIPAL -->
 
-        <VerticalStackLayout
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,Auto,*"
+        RowSpacing="16">
+
+        <!-- CABECALHO -->
+
+        <Border
             Grid.Row="0"
-            Padding="15"
-            Spacing="10">
+            BackgroundColor="#071A47"
+            Stroke="#0B2A6F"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 8"
+            Padding="18">
 
-            <Grid ColumnDefinitions="Auto,*,Auto">
+            <Grid
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="12">
 
-                <Picker
+                <VerticalStackLayout
                     Grid.Column="0"
-                    ItemsSource="{Binding FilterTypes}"
-                    SelectedItem="{Binding SelectedFilterType}"
-                    WidthRequest="110" />
+                    Spacing="5"
+                    VerticalOptions="Center">
 
-                <Entry
-                    Grid.Column="1"
-                    Text="{Binding SearchText}"
-                    Placeholder="Digite o valor..."
-                    Margin="10,0" />
+                    <Label
+                        Text="LOGRADOUROS"
+                        FontFamily="Graduate"
+                        FontSize="27"
+                        TextColor="White" />
+
+                    <Label
+                        Text="GERENCIAMENTO DE ENDEREÇOS"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="2"
+                        TextColor="White" />
+
+                </VerticalStackLayout>
 
                 <Button
-                    Grid.Column="2"
-                    Text="Buscar"
-                    Command="{Binding SearchLogradourosCommand}" />
+                    Grid.Column="1"
+                    Text="+ NOVO LOGRADOURO"
+                    Command="{Binding AddLogradouroCommand}"
+                    BackgroundColor="White"
+                    TextColor="#0B2A6F"
+                    FontFamily="Oswald"
+                    FontSize="15"
+                    CornerRadius="6"
+                    Padding="18,10"
+                    VerticalOptions="Center" />
 
             </Grid>
 
-            <Button
-                Text="Novo Logradouro"
-                Command="{Binding AddLogradouroCommand}" />
+        </Border>
 
-        </VerticalStackLayout>
+        <!-- PESQUISA -->
+
+        <Border
+            Grid.Row="1"
+            BackgroundColor="White"
+            Stroke="#0B2A6F"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            Padding="16">
+
+            <VerticalStackLayout Spacing="10">
+
+                <Label
+                    Text="PESQUISAR LOGRADOUROS"
+                    FontFamily="Oswald"
+                    FontSize="17"
+                    TextColor="#0B2A6F" />
+
+                <Grid
+                    ColumnDefinitions="180,*,130"
+                    ColumnSpacing="10">
+
+                    <!-- FILTRO -->
+
+                    <Picker
+                        Grid.Column="0"
+                        Title="Filtrar por"
+                        ItemsSource="{Binding FilterTypes}"
+                        SelectedItem="{Binding SelectedFilterType}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        TitleColor="#5A6478"
+                        VerticalOptions="Center" />
+
+                    <!-- TEXTO DE PESQUISA -->
+
+                    <Entry
+                        Grid.Column="1"
+                        Text="{Binding SearchText}"
+                        Placeholder="Digite o valor da pesquisa"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478"
+                        ClearButtonVisibility="WhileEditing"
+                        ReturnCommand="{Binding SearchLogradourosCommand}" />
+
+                    <!-- BOTAO PESQUISAR -->
+
+                    <Button
+                        Grid.Column="2"
+                        Text="PESQUISAR"
+                        Command="{Binding SearchLogradourosCommand}"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        HeightRequest="48"
+                        VerticalOptions="Center" />
+
+                </Grid>
+
+            </VerticalStackLayout>
+
+        </Border>
+
+        <!-- LISTAGEM -->
 
         <RefreshView
-            Grid.Row="1"
+            Grid.Row="2"
             IsRefreshing="{Binding IsRefreshing}"
             Command="{Binding RefreshCommand}">
 
             <CollectionView
                 ItemsSource="{Binding Logradouros}"
-                SelectionMode="None">
+                SelectionMode="None"
+                VerticalOptions="FillAndExpand">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout
+                        Orientation="Vertical"
+                        Span="1" />
+                </CollectionView.ItemsLayout>
+
+                <!-- LISTA VAZIA -->
 
                 <CollectionView.EmptyView>
+
                     <VerticalStackLayout
                         Padding="30"
+                        Spacing="12"
                         HorizontalOptions="Center"
                         VerticalOptions="Center">
 
                         <Label
                             Text="Nenhum logradouro encontrado."
+                            FontFamily="Oswald"
                             FontSize="18"
+                            TextColor="#5A6478"
                             HorizontalTextAlignment="Center" />
 
                         <Button
-                            Text="Cadastrar Logradouro"
+                            Text="+ CADASTRAR LOGRADOURO"
                             Command="{Binding AddLogradouroCommand}"
-                            Margin="0,15,0,0" />
+                            Style="{StaticResource OldSchoolPrimaryButton}"
+                            HeightRequest="48" />
 
                     </VerticalStackLayout>
+
                 </CollectionView.EmptyView>
 
+                <!-- CARTAO DE LOGRADOURO -->
+
                 <CollectionView.ItemTemplate>
+
                     <DataTemplate x:DataType="dto:LogradouroDto">
 
                         <Border
-                            Margin="15,5"
-                            Padding="15"
-                            StrokeShape="RoundRectangle 12">
+                            BackgroundColor="White"
+                            Stroke="#0B2A6F"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="16"
+                            Margin="0,0,0,12">
 
-                            <VerticalStackLayout Spacing="6">
+                            <Grid
+                                ColumnDefinitions="*,120"
+                                ColumnSpacing="16">
 
-                                <Label
-                                    Text="{Binding Nome}"
-                                    FontSize="18"
-                                    FontAttributes="Bold" />
+                                <!-- INFORMACOES -->
 
-                                <Label
-                                    Text="{Binding Cep, StringFormat='CEP: {0}'}" />
+                                <VerticalStackLayout
+                                    Grid.Column="0"
+                                    Spacing="7">
 
-                                <Label
-                                    Text="{Binding Bairro, StringFormat='Bairro: {0}'}" />
+                                    <Label
+                                        Text="{Binding Nome}"
+                                        FontFamily="Oswald"
+                                        FontSize="21"
+                                        TextColor="#0B2A6F"
+                                        LineBreakMode="WordWrap" />
 
-                                <Label
-                                    Text="{Binding Cidade, StringFormat='Cidade: {0}'}" />
+                                    <Label
+                                        Text="{Binding Cep, StringFormat='CEP: {0}'}"
+                                        FontFamily="Roboto"
+                                        FontSize="14"
+                                        TextColor="#5A6478" />
 
-                                <Label
-                                    Text="{Binding Estado, StringFormat='Estado: {0}'}" />
+                                    <Label
+                                        Text="{Binding Bairro, StringFormat='BAIRRO: {0}'}"
+                                        FontFamily="Roboto"
+                                        FontSize="14"
+                                        TextColor="#5A6478" />
 
-                                <HorizontalStackLayout
-                                    Spacing="10">
-                                    
+                                    <Label
+                                        Text="{Binding Cidade, StringFormat='CIDADE: {0}'}"
+                                        FontFamily="Roboto"
+                                        FontSize="14"
+                                        TextColor="#5A6478" />
+
+                                    <Label
+                                        Text="{Binding Estado, StringFormat='ESTADO: {0}'}"
+                                        FontFamily="Roboto"
+                                        FontSize="14"
+                                        TextColor="#5A6478" />
+
+                                </VerticalStackLayout>
+
+                                <!-- BOTOES DE ACAO -->
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="8"
+                                    WidthRequest="110"
+                                    VerticalOptions="Center">
+
                                     <Button
-                                        Text="Editar"
-                                        Clicked="OnEditButtonClicked" />
+                                        Text="EDITAR"
+                                        Clicked="OnEditButtonClicked"
+                                        BackgroundColor="#0B2A6F"
+                                        TextColor="White"
+                                        FontFamily="Oswald"
+                                        FontSize="14"
+                                        CornerRadius="6"
+                                        HeightRequest="42" />
 
                                     <Button
-                                        Text="Excluir"
-                                        Clicked="OnDeleteButtonClicked" />  
+                                        Text="EXCLUIR"
+                                        Clicked="OnDeleteButtonClicked"
+                                        BackgroundColor="#B3261E"
+                                        TextColor="White"
+                                        FontFamily="Oswald"
+                                        FontSize="14"
+                                        CornerRadius="6"
+                                        HeightRequest="42" />
 
-                                </HorizontalStackLayout>
+                                </VerticalStackLayout>
 
-                            </VerticalStackLayout>
+                            </Grid>
 
                         </Border>
 
                     </DataTemplate>
+
                 </CollectionView.ItemTemplate>
 
             </CollectionView>
 
         </RefreshView>
 
-        <Button
-            Grid.Row="1"
-            Text="+"
-            Command="{Binding AddLogradouroCommand}"
-            WidthRequest="60"
-            HeightRequest="60"
-            CornerRadius="30"
-            HorizontalOptions="End"
-            VerticalOptions="End"
-            Margin="20" />
+        <!-- INDICADOR DE CARREGAMENTO -->
 
         <ActivityIndicator
-            Grid.Row="1"
+            Grid.Row="0"
+            Grid.RowSpan="3"
             IsRunning="{Binding IsBusy}"
             IsVisible="{Binding IsBusy}"
+            Color="#0B2A6F"
             HorizontalOptions="Center"
-            VerticalOptions="Center" />
+            VerticalOptions="Center"
+            ZIndex="20" />
 
     </Grid>
 

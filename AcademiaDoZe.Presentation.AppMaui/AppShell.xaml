@@ -1,11 +1,114 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <Shell
     x:Class="AcademiaDoZe.Presentation.AppMaui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:AcademiaDoZe.Presentation.AppMaui"
     xmlns:views="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Views"
-    Title="Academia do Zé">
+    Title="Academia do Zé"
+
+    FlyoutBackgroundColor="{StaticResource OldSchoolPrimaryDark}"
+    FlyoutWidth="290"
+
+    Shell.BackgroundColor="{StaticResource OldSchoolPrimaryDark}"
+    Shell.ForegroundColor="White"
+    Shell.TitleColor="White"
+    Shell.UnselectedColor="#F5F3EC"
+    Shell.DisabledColor="#5A6478">
+
+    <!-- CABECALHO DO MENU LATERAL -->
+
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout
+            Padding="20,28,20,24"
+            Spacing="10"
+            BackgroundColor="{StaticResource OldSchoolPrimaryDark}">
+
+            <Image
+                Source="academiadoze.png"
+                HeightRequest="130"
+                WidthRequest="130"
+                HorizontalOptions="Center"
+                Aspect="AspectFit" />
+
+            <Label
+                Text="ACADEMIA DO ZÉ"
+                FontFamily="Graduate"
+                FontSize="18"
+                TextColor="White"
+                HorizontalTextAlignment="Center" />
+
+            <Label
+                Text="PAINEL ADMINISTRATIVO"
+                FontFamily="Oswald"
+                FontSize="12"
+                CharacterSpacing="2"
+                TextColor="#F5F3EC"
+                HorizontalTextAlignment="Center" />
+
+            <BoxView
+                HeightRequest="2"
+                Color="White"
+                Margin="12,12,12,0" />
+
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <!-- APARENCIA DOS ITENS DO MENU -->
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid
+            Padding="16,12"
+            ColumnDefinitions="36,*"
+            ColumnSpacing="10"
+            BackgroundColor="Transparent">
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup Name="CommonStates">
+
+                            <VisualState Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter
+                                    Property="BackgroundColor"
+                                    Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource OldSchoolPrimary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+
+                <Image
+                Grid.Column="0"
+                Source="{Binding FlyoutIcon}"
+                WidthRequest="22"
+                HeightRequest="22"
+                VerticalOptions="Center" />
+
+                <Label
+                Grid.Column="1"
+                Text="{Binding Title}"
+                FontFamily="Oswald"
+                FontSize="17"
+                TextColor="White"
+                VerticalOptions="Center" />
+
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+
+    <!-- DASHBOARD -->
 
     <FlyoutItem Title="Dashboard">
         <ShellContent
@@ -13,10 +116,14 @@
             Route="dashboard" />
     </FlyoutItem>
 
+    <!-- ALUNOS -->
+
     <ShellContent
         Title="Alunos"
         ContentTemplate="{DataTemplate views:AlunoListPage}"
         Route="alunos" />
+
+    <!-- COLABORADORES -->
 
     <FlyoutItem Title="Colaboradores">
         <ShellContent
@@ -25,6 +132,8 @@
             Route="colaboradores" />
     </FlyoutItem>
 
+    <!-- MATRICULAS -->
+
     <FlyoutItem Title="Matrículas">
         <ShellContent
             Title="Matrículas"
@@ -32,7 +141,8 @@
             Route="matriculas" />
     </FlyoutItem>
 
-    <!-- Controle de Acesso / Catraca -->
+    <!-- CONTROLE DE ACESSO -->
+
     <FlyoutItem Title="Controle de Acesso">
         <ShellContent
             Title="Controle de Acesso"
@@ -40,11 +150,15 @@
             Route="controleacesso" />
     </FlyoutItem>
 
+    <!-- LOGRADOUROS -->
+
     <FlyoutItem Title="Logradouros">
         <ShellContent
             ContentTemplate="{DataTemplate views:LogradouroListPage}"
             Route="logradouros" />
     </FlyoutItem>
+
+    <!-- CONFIGURACOES -->
 
     <FlyoutItem Title="Configurações" Icon="academiadoze.png">
         <ShellContent

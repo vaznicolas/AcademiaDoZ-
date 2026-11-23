@@ -1,127 +1,364 @@
 <?xml version="1.0" encoding="utf-8" ?>
-    <ContentPage
+
+<ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoPage"
     xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
-    Title="{Binding Title}">
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoPage"
+    Title="{Binding Title}"
+    BackgroundColor="#F5F3EC">
 
     <ContentPage.Resources>
         <converters:FotoToImageSourceConverter
-        x:Key="FotoToImageSourceConverter" />
+            x:Key="FotoToImageSourceConverter" />
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="12">
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="18"
+            MaximumWidthRequest="1000"
+            HorizontalOptions="Center">
 
-            <Label
-                Text="Dados pessoais"
-                FontSize="22"
-                FontAttributes="Bold" />
-
-            <Label
-    Text="Foto do aluno"
-    FontSize="18"
-    FontAttributes="Bold"
-    Margin="0,10,0,0" />
+            <!-- CABECALHO -->
 
             <Border
-    Stroke="#CCCCCC"
-    StrokeThickness="1"
-    Padding="5"
-    HorizontalOptions="Center"
-    WidthRequest="160"
-    HeightRequest="160">
+                BackgroundColor="#071A47"
+                Stroke="#0B2A6F"
+                StrokeThickness="2"
+                StrokeShape="RoundRectangle 8"
+                Padding="20">
 
-                <Image
-        Source="{Binding Aluno.Foto, Converter={StaticResource FotoToImageSourceConverter}}"
-        Aspect="AspectFill" />
+                <VerticalStackLayout Spacing="6">
+
+                    <Label
+                        Text="{Binding Title}"
+                        FontFamily="Graduate"
+                        FontSize="26"
+                        TextColor="White" />                
+
+                    <Label
+                        Text="DADOS PESSOAIS E INFORMAÇÕES CADASTRAIS"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="1"
+                        TextColor="White" />
+
+                </VerticalStackLayout>
             </Border>
 
-            <Button
-    Text="Selecionar foto"
-    Command="{Binding SelecionarFotoCommand}" />
+            <!-- DADOS PESSOAIS -->
 
-            <Entry
-                Placeholder="Nome completo"
-                Text="{Binding Aluno.Nome}" />
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="18">
 
-            <Entry
-                Placeholder="CPF"
-                Keyboard="Numeric"
-                Text="{Binding Aluno.Cpf}" />
+                <VerticalStackLayout Spacing="14">
 
-            <Label Text="Data de nascimento" />
+                    <Label
+                        Text="DADOS PESSOAIS"
+                        Style="{StaticResource OldSchoolSubtitle}" />
 
-            <DatePicker
-                Date="{Binding DataNascimentoDateTime, Mode=TwoWay}"
-                Format="dd/MM/yyyy" />
+                    <!-- FOTO -->
 
-            <Entry
-                Placeholder="Telefone com DDD"
-                Keyboard="Telephone"
-                Text="{Binding Aluno.Telefone}" />
+                    <Label
+                        Text="FOTO DO ALUNO"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        TextColor="#5A6478" />
 
-            <Entry
-                Placeholder="E-mail (opcional)"
-                Keyboard="Email"
-                Text="{Binding Aluno.Email}" />
+                    <Border
+                        Stroke="#0B2A6F"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 8"
+                        BackgroundColor="#F5F3EC"
+                        Padding="5"
+                        HorizontalOptions="Center"
+                        WidthRequest="160"
+                        HeightRequest="160">
 
-            <Label
-                Text="Endereço"
-                FontSize="22"
-                FontAttributes="Bold"
-                Margin="0,12,0,0" />
+                        <Image
+                            Source="{Binding Aluno.Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                            Aspect="AspectFill" />
 
-            <Entry
-                Placeholder="CEP cadastrado em Logradouros"
-                Keyboard="Numeric"
-                Text="{Binding Aluno.Endereco.Cep}" />
+                    </Border>
 
-            <Entry
-                Placeholder="Número"
-                Text="{Binding Aluno.Numero}" />
+                    <Button
+                        Text="SELECIONAR FOTO"
+                        Command="{Binding SelecionarFotoCommand}"
+                        Style="{StaticResource OldSchoolSecondaryButton}"
+                        HorizontalOptions="Center"
+                        WidthRequest="200"
+                        HeightRequest="46" />
 
-            <Entry
-                Placeholder="Complemento (opcional)"
-                Text="{Binding Aluno.Complemento}" />
+                    <!-- NOME -->
 
-            <Label
-                Text="Senha"
-                FontSize="22"
-                FontAttributes="Bold"
-                Margin="0,12,0,0" />
+                    <Label
+                        Text="NOME COMPLETO"
+                        FontFamily="Oswald"
+                        TextColor="#0B2A6F" />
 
-            <Entry
-                Placeholder="Senha"
-                IsPassword="True"
-                Text="{Binding Aluno.Senha}" />
+                    <Entry
+                        Placeholder="Digite o nome completo"
+                        Text="{Binding Aluno.Nome}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47" />
 
-            <Entry
-                Placeholder="Confirmar senha"
-                IsPassword="True"
-                Text="{Binding ConfirmarSenha}" />
+                    <!-- CPF E NASCIMENTO -->
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="6">
+
+                            <Label
+                                Text="CPF"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <Entry
+                                Placeholder="CPF"
+                                Keyboard="Numeric"
+                                Text="{Binding Aluno.Cpf}"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="6">
+
+                            <Label
+                                Text="DATA DE NASCIMENTO"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <DatePicker
+                                Date="{Binding DataNascimentoDateTime, Mode=TwoWay}"
+                                Format="dd/MM/yyyy"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                    <!-- CONTATO -->
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="6">
+
+                            <Label
+                                Text="TELEFONE"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <Entry
+                                Placeholder="Telefone com DDD"
+                                Keyboard="Telephone"
+                                Text="{Binding Aluno.Telefone}"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="6">
+
+                            <Label
+                                Text="E-MAIL (OPCIONAL)"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <Entry
+                                Placeholder="E-mail"
+                                Keyboard="Email"
+                                Text="{Binding Aluno.Email}"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ENDERECO -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="18">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="ENDEREÇO"
+                        Style="{StaticResource OldSchoolSubtitle}" />
+
+                    <Label
+                        Text="CEP CADASTRADO EM LOGRADOUROS"
+                        FontFamily="Oswald"
+                        TextColor="#0B2A6F" />
+
+                    <Entry
+                        Placeholder="Digite o CEP"
+                        Keyboard="Numeric"
+                        Text="{Binding Aluno.Endereco.Cep}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47" />
+
+                    <Grid
+                        ColumnDefinitions="150,*"
+                        ColumnSpacing="12">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="6">
+
+                            <Label
+                                Text="NÚMERO"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <Entry
+                                Placeholder="Número"
+                                Text="{Binding Aluno.Numero}"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="6">
+
+                            <Label
+                                Text="COMPLEMENTO"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <Entry
+                                Placeholder="Complemento (opcional)"
+                                Text="{Binding Aluno.Complemento}"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- SENHA -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="#0B2A6F"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="18">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="SEGURANÇA"
+                        Style="{StaticResource OldSchoolSubtitle}" />
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="6">
+
+                            <Label
+                                Text="SENHA"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <Entry
+                                Placeholder="Senha"
+                                IsPassword="True"
+                                Text="{Binding Aluno.Senha}"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="6">
+
+                            <Label
+                                Text="CONFIRMAR SENHA"
+                                FontFamily="Oswald"
+                                TextColor="#0B2A6F" />
+
+                            <Entry
+                                Placeholder="Confirme a senha"
+                                IsPassword="True"
+                                Text="{Binding ConfirmarSenha}"
+                                BackgroundColor="#F5F3EC"
+                                TextColor="#071A47" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ACOES -->
 
             <Grid
                 ColumnDefinitions="*,*"
-                ColumnSpacing="10"
-                Margin="0,15,0,0">
+                ColumnSpacing="12"
+                Margin="0,4,0,16">
 
                 <Button
                     Grid.Column="0"
-                    Text="Cancelar"
-                    Command="{Binding CancelCommand}" />
+                    Text="CANCELAR"
+                    Command="{Binding CancelCommand}"
+                    Style="{StaticResource OldSchoolSecondaryButton}"
+                    HeightRequest="52" />
 
                 <Button
                     Grid.Column="1"
-                    Text="Salvar"
-                    Command="{Binding SaveAlunoCommand}" />
+                    Text="SALVAR ALUNO"
+                    Command="{Binding SaveAlunoCommand}"
+                    Style="{StaticResource OldSchoolPrimaryButton}"
+                    HeightRequest="52" />
+
             </Grid>
+
+            <!-- CARREGAMENTO -->
 
             <ActivityIndicator
                 IsVisible="{Binding IsBusy}"
-                IsRunning="{Binding IsBusy}" />
+                IsRunning="{Binding IsBusy}"
+                Color="#0B2A6F"
+                HorizontalOptions="Center" />
 
         </VerticalStackLayout>
     </ScrollView>
+
 </ContentPage>

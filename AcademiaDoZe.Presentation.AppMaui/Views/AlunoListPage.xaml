@@ -1,80 +1,267 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
     x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoListPage"
-    Title="Alunos">
+    Title="Alunos"
+    BackgroundColor="#F5F3EC">
 
-    <VerticalStackLayout Padding="16" Spacing="12">
+    <!-- CONVERSOR DE FOTO -->
 
-        <Button
-            Text="+ Novo aluno"
-            Command="{Binding AddAlunoCommand}" />
+    <ContentPage.Resources>
+        <converters:FotoToImageSourceConverter
+            x:Key="FotoToImageSourceConverter" />
+    </ContentPage.Resources>
 
-        <Picker
-            Title="Filtrar por"
-            ItemsSource="{Binding FilterTypes}"
-            SelectedItem="{Binding SelectedFilterType}" />
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,Auto,Auto,*"
+        RowSpacing="16">
 
-        <Entry
-            Placeholder="Digite sua pesquisa"
-            Text="{Binding SearchText}" />
+        <!-- CABECALHO -->
 
-        <Button
-            Text="Pesquisar"
-            Command="{Binding SearchAlunosCommand}" />
+        <Border
+            Grid.Row="0"
+            BackgroundColor="#071A47"
+            Stroke="#0B2A6F"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 8"
+            Padding="18">
+
+            <Grid
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="12">
+
+                <VerticalStackLayout
+                    Grid.Column="0"
+                    Spacing="5"
+                    VerticalOptions="Center">
+
+                    <Label
+                        Text="ALUNOS"
+                        FontFamily="Graduate"
+                        FontSize="27"
+                        TextColor="White" />
+
+                    <Label
+                        Text="GERENCIAMENTO DE ALUNOS"
+                        FontFamily="Oswald"
+                        FontSize="14"
+                        CharacterSpacing="2"
+                        TextColor="White" />
+
+                </VerticalStackLayout>
+
+                <Button
+                    Grid.Column="1"
+                    Text="+ NOVO ALUNO"
+                    Command="{Binding AddAlunoCommand}"
+                    BackgroundColor="White"
+                    TextColor="#0B2A6F"
+                    FontFamily="Oswald"
+                    FontSize="15"
+                    CornerRadius="6"
+                    Padding="18,10"
+                    VerticalOptions="Center" />
+
+            </Grid>
+        </Border>
+
+        <!-- FILTROS E PESQUISA -->
+
+        <Border
+            Grid.Row="1"
+            BackgroundColor="White"
+            Stroke="#0B2A6F"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            Padding="16">
+
+            <VerticalStackLayout Spacing="10">
+
+                <Label
+                    Text="PESQUISAR ALUNOS"
+                    FontFamily="Oswald"
+                    FontSize="17"
+                    TextColor="#0B2A6F" />
+
+                <Grid
+                    ColumnDefinitions="180,*,130"
+                    ColumnSpacing="10">
+
+                    <Picker
+                        Grid.Column="0"
+                        Title="Filtrar por"
+                        ItemsSource="{Binding FilterTypes}"
+                        SelectedItem="{Binding SelectedFilterType}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47" />
+
+                    <Entry
+                        Grid.Column="1"
+                        Placeholder="Digite sua pesquisa"
+                        Text="{Binding SearchText}"
+                        BackgroundColor="#F5F3EC"
+                        TextColor="#071A47"
+                        PlaceholderColor="#5A6478" />
+
+                    <Button
+                        Grid.Column="2"
+                        Text="PESQUISAR"
+                        Command="{Binding SearchAlunosCommand}"
+                        Style="{StaticResource OldSchoolPrimaryButton}"
+                        VerticalOptions="Center"
+                        HeightRequest="48" />
+
+                </Grid>
+
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- CARREGAMENTO -->
 
         <ActivityIndicator
+            Grid.Row="2"
             IsVisible="{Binding IsBusy}"
-            IsRunning="{Binding IsBusy}" />
+            IsRunning="{Binding IsBusy}"
+            Color="#0B2A6F"
+            HorizontalOptions="Center" />
+
+        <!-- LISTA DE ALUNOS -->
 
         <CollectionView
+            Grid.Row="3"
             ItemsSource="{Binding Alunos}"
-            SelectionMode="None">
+            SelectionMode="None"
+            VerticalOptions="FillAndExpand">
 
             <CollectionView.EmptyView>
-                <Label
-                    Text="Nenhum aluno encontrado."
-                    HorizontalOptions="Center"
-                    Margin="10" />
+                <VerticalStackLayout
+                    Padding="30"
+                    Spacing="8"
+                    HorizontalOptions="Center">
+
+                    <Label
+                        Text="Nenhum aluno encontrado."
+                        FontFamily="Oswald"
+                        FontSize="18"
+                        TextColor="#5A6478"
+                        HorizontalTextAlignment="Center" />
+
+                </VerticalStackLayout>
             </CollectionView.EmptyView>
 
             <CollectionView.ItemTemplate>
+
                 <DataTemplate>
+
                     <Border
-                        Stroke="#CCCCCC"
+                        Stroke="#0B2A6F"
                         StrokeThickness="1"
-                        Padding="12"
-                        Margin="0,4">
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="16"
+                        Margin="0,0,0,12">
 
-                        <VerticalStackLayout Spacing="6">
+                        <!-- TRES COLUNAS:
+                             DADOS | FOTO | ACOES -->
 
-                            <Label
-                                Text="{Binding Nome}"
-                                FontSize="18"
-                                FontAttributes="Bold" />
+                        <Grid
+                            ColumnDefinitions="*,120,Auto"
+                            ColumnSpacing="16">
 
-                            <Label Text="{Binding Cpf, StringFormat='CPF: {0}'}" />
-                            <Label Text="{Binding Email, StringFormat='E-mail: {0}'}" />
+                            <!-- DADOS DO ALUNO -->
 
-                            <Button
-                                Text="Editar"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditAlunoCommand}"
-                                CommandParameter="{Binding .}" />
+                            <VerticalStackLayout
+                                Grid.Column="0"
+                                Spacing="7"
+                                VerticalOptions="Center">
 
+                                <Label
+                                    Text="{Binding Nome}"
+                                    FontFamily="Oswald"
+                                    FontSize="21"
+                                    TextColor="#0B2A6F"
+                                    LineBreakMode="WordWrap" />
 
-                            <Button Text="Excluir"
-        BackgroundColor="#0B2A56"
-        TextColor="White"
-        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteAlunoCommand}"
-        CommandParameter="{Binding .}" />
+                                <Label
+                                    Text="{Binding Id, StringFormat='CÓDIGO DO ALUNO: {0}'}"
+                                    FontFamily="Oswald"
+                                    FontSize="12"
+                                    TextColor="#0B2A6F" />
 
+                                <Label
+                                    Text="{Binding Cpf, StringFormat='CPF: {0}'}"
+                                    FontFamily="Roboto"
+                                    FontSize="14"
+                                    TextColor="#5A6478" />
 
-                        </VerticalStackLayout>
+                                <Label
+                                    Text="{Binding Email, StringFormat='E-mail: {0}'}"
+                                    FontFamily="Roboto"
+                                    FontSize="14"
+                                    TextColor="#5A6478"
+                                    LineBreakMode="TailTruncation" />
+
+                            </VerticalStackLayout>
+
+                            <!-- FOTO DO ALUNO -->
+
+                            <Border
+                                Grid.Column="1"
+                                WidthRequest="110"
+                                HeightRequest="110"
+                                Padding="3"
+                                BackgroundColor="#F5F3EC"
+                                Stroke="#0B2A6F"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+
+                                <Image
+                                    Source="{Binding Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                                    Aspect="AspectFill"
+                                    WidthRequest="104"
+                                    HeightRequest="104" />
+
+                            </Border>
+
+                            <!-- ACOES -->
+
+                            <VerticalStackLayout
+                                Grid.Column="2"
+                                Spacing="8"
+                                WidthRequest="115"
+                                VerticalOptions="Center">
+
+                                <Button
+                                    Text="EDITAR"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditAlunoCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource OldSchoolSecondaryButton}"
+                                    HeightRequest="42" />
+
+                                <Button
+                                    Text="EXCLUIR"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteAlunoCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource OldSchoolDangerButton}"
+                                    HeightRequest="42" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
                     </Border>
+
                 </DataTemplate>
+
             </CollectionView.ItemTemplate>
+
         </CollectionView>
 
-    </VerticalStackLayout>
+    </Grid>
+
 </ContentPage>
